@@ -170,7 +170,10 @@ begin
           end;
         end;
         'exit' : begin
-          tulisBalik(DaftarBahanM,DaftarBahanO,ResepResep,SemuaSimulasi);
+          if(LoadSukses)then
+          begin
+            tulisBalik(DaftarBahanM,DaftarBahanO,ResepResep,SemuaSimulasi);
+          end;
           Halt();
         end;
         'start' : begin
