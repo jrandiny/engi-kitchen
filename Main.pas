@@ -145,6 +145,32 @@ begin
   SemuaSimulasi:= getSimulasi(parse('simulasi.txt'));
 end;
 
+procedure showHelp();
+{I.S. : Tampilan layar kosong}
+{F.S. : Dicetak help}
+begin
+  writeln('Perintah tersedia');
+  writeln('load           Memuat data dari file');
+  writeln('exit           Keluar');
+  writeln('start          Memulai simulasi');
+  writeln('stop           Mengentikan simulasi');
+  writeln('lihatinventori Menampilkan inventori');
+  writeln('lihatresep     Menampilkan daftar resep');
+  writeln('cariresep      Mencari resep');
+  writeln('tambahresep    Menambah resep ke daftar');
+  writeln();
+  writeln('Perintah khusus dalam simulasi');
+  writeln('belibahan      Membeli bahan mentah');
+  writeln('olahbahan      Mengolah bahan mentah jadi olahan');
+  writeln('jualolahan     Menjual bahan hasil olahan');
+  writeln('jualresep      Membuat dan menjual makanan sesuai resep');
+  writeln('tidur          Memajukan hari dan mengembalikan energi serta menghapus item kadaluarsa');
+  writeln('makan          Menambah 3 energi');
+  writeln('istirahat      Menambah 1 energi');
+  writeln('lihatstatistik Melihat statistik');
+
+end;
+
 
 
 {Algoritma}
@@ -371,6 +397,11 @@ begin
         lihatresep();
       end;
 
+      'help':begin
+        writeln('Engi''s Kitchen');
+        showHelp();
+      end;
+
       'lihatinventori' : begin
         if(not(isSimulasiAktif))then
         begin
@@ -463,6 +494,7 @@ begin
     if(not(isInputValid))then
     begin
       writeln('ERROR : Main -> Perintah tidak valid');
+      showHelp();
     end;
 
 
