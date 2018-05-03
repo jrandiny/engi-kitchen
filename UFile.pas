@@ -2,7 +2,7 @@ unit UFile;
 
 interface
 
-  uses UTipe,UTanggal;
+  uses UTipe,UTanggal,sysutils;
 
   var
     LoadSukses:boolean;
@@ -128,66 +128,75 @@ implementation
 
   {ALGORITMA-PARSE}
   begin
-    assign(data, NamaFile);
-    reset(data);
-
-    {Mengatur batas maksimal kolom yang dibaca}
-    DataTerambil.NKol:=0;
-    DataTerambil.NBar:=0;
-
-    baris:=1;
-
-    while (not(eof(data))) do
+    if(FileExists(NamaFile))then
     begin
-      {Proses per baris}
-      DataTerambil.NBar:=DataTerambil.Nbar+1;
-      readln(data, line);
-      i:=0;
-      kolom:=1;
-      temp:='';
-      while(i<=length(line)) do
-      begin
-        {Proses per karakter}
-        ch:=line[i];
-        if(ch='|')then
-        begin
-          {Jika ketemu karakter pemisah masukkan semua string sebelum karakter ke tabel}
-          kolom:=kolom+1;
-          newString := temp;
-          delete(newString,1,1);
-          delete(newString,length(newString),1);
-          DataTerambil.Isi[baris][kolom-1]:=newString;
+      assign(data, NamaFile);
+      reset(data);
 
-          temp:='';
-        end else
+      {Mengatur batas maksimal kolom yang dibaca}
+      DataTerambil.NKol:=0;
+      DataTerambil.NBar:=0;
+
+      baris:=1;
+
+      while (not(eof(data))) do
+      begin
+        {Proses per baris}
+        DataTerambil.NBar:=DataTerambil.Nbar+1;
+        readln(data, line);
+        i:=0;
+        kolom:=1;
+        temp:='';
+        while(i<=length(line)) do
         begin
-          {Jika bukan karakter pemisah, tambahkan karakter ke string sementara}
-          temp:=temp+ch;
+          {Proses per karakter}
+          ch:=line[i];
+          if(ch='|')then
+          begin
+            {Jika ketemu karakter pemisah masukkan semua string sebelum karakter ke tabel}
+            kolom:=kolom+1;
+            newString := temp;
+            delete(newString,1,1);
+            delete(newString,length(newString),1);
+            DataTerambil.Isi[baris][kolom-1]:=newString;
+
+            temp:='';
+          end else
+          begin
+            {Jika bukan karakter pemisah, tambahkan karakter ke string sementara}
+            temp:=temp+ch;
+          end;
+
+          {Di ujung juga lakukan hal yang sama seperti ketemu pemisah}
+          if(i=length(line))then
+          begin
+            kolom:=kolom+1;
+            newString:=temp;
+            delete(newString,1,1);
+            DataTerambil.Isi[baris][kolom-1]:=newString;
+          end;
+
+          i:=i+1;
         end;
 
-        {Di ujung juga lakukan hal yang sama seperti ketemu pemisah}
-        if(i=length(line))then
+        {set NKol ke kolom terbanyak di file}
+        if(kolom>DataTerambil.NKol)then
         begin
-          kolom:=kolom+1;
-          newString:=temp;
-          delete(newString,1,1);
-          DataTerambil.Isi[baris][kolom-1]:=newString;
+          DataTerambil.NKol := kolom;
         end;
 
-        i:=i+1;
+        baris:=baris + 1;
+
       end;
 
-      {set NKol ke kolom terbanyak di file}
-      if(kolom>DataTerambil.NKol)then
-      begin
-        DataTerambil.NKol := kolom;
-      end;
-
-      baris:=baris + 1;
-
+      close(data);
+    end else
+    begin
+      write('ERROR : UFile -> Tidak dapat menemukan file ');
+      writeln(NamaFile);
+      LoadSukses:=false;
     end;
 
-    close(data);
 
     parse:=DataTerambil;
 
@@ -295,7 +304,7 @@ implementation
     {Cek apakah sudah ada daftar bahan mentah agar dapat dicocokkan dengan inventori}
     if(InternalBahanMentah.Isi[1].Nama = '')then
     begin
-      writeln('ERROR : UFile -> File inventori bahan mentah dibaca sebelum file bahan mentah');
+      writeln('ERROR : UFile -> File inventori bahan mentah dibaca sebelum file bahan mentah atau file bahan mentah kosong');
       LoadSukses:=false;
     end else
     begin
@@ -347,7 +356,7 @@ implementation
     {Cek apakah sudah ada daftar bahan olahan untuk dicocokkan dengan inventori}
     if(InternalBahanOlahan.Isi[1].Nama = '')then
     begin
-      writeln('ERROR : UFile -> File inventori bahan olahan dibaca sebelum file bahan mentah');
+      writeln('ERROR : UFile -> File inventori bahan olahan dibaca sebelum file bahan olahan atau file bahan olahan kosong');
       LoadSukses:=false;
     end else
     begin
