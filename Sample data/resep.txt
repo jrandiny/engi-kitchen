@@ -1,0 +1,3 @@
+Nasi Goreng Sapi | 15000 | 2 | Nasi Goreng | Daging Sapi
+Soda Float | 10000 | 2 | Es Krim | Soda
+Nasi Sate Ayam | 15000 | 3 | Nasi Putih | Daging Sapi | Kecap

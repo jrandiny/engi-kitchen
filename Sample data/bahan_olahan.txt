@@ -1,0 +1,3 @@
+Nasi Putih | 1200 | 2 | Beras | Air
+Nasi Goreng | 2000 | 5 | Beras | Air | Bawang Putih | Lada | Kecap
+Sosis | 1000 | 4 | Daging Sapi | Bawang Putih | Kecap | Lada
