@@ -7,12 +7,12 @@ var
   x,y:Tanggal;
 
 begin
-  writeln('TANGGAL TESTER');
+  writeln('TESTING - UTanggal');
   writeln();
 
   while(true)do
   begin
-    write('command : ');
+    write('Perintah : ');
     readln(input);
 
     case input of
@@ -39,8 +39,21 @@ begin
         writeln(isTanggalDuluan(x,y));
       end;
       'next':begin
+        write(x.Hari,x.Bulan,x.Tahun,' -> ');
         y:=nextTanggal(x);
         writeln(y.Hari, y.Bulan, y.Tahun);
+      end;
+      'exit':begin
+        break;
+      end;
+      'help':begin
+        writeln('duluan -> Cek apakah tanggal 1 duluan dari tanggal 2');
+        writeln('exit   -> Keluar');
+        writeln('input1 -> Input tanggal 1');
+        writeln('input2 -> Input tanggal 2');
+        writeln('jarak  -> Menampilkan jarak(dalam hari) antara tanggal 1 dan 2');
+        writeln('next   -> Memajukan tanggal 1 sebanyak 1 hari');
+        writeln('sama   -> Cek apakah tanggal 1 dan 2 sama');
       end;
     end;
   end;
