@@ -14,6 +14,8 @@ Untuk menggunakan jalan kan program 'Main'
 
 Ketik 'help' untuk melihat perintah yang mungkin dijalankan
 
+Untuk deskripsi lebih jelas tentang tiap perintah, bisa melihat dokumen [Command.md](Dokumen/Command.md)
+
 Untuk data bisa dilihat di folder 'sample data', jika ingin menggunakan pindahkan file ke folder yang sama dengan program 'Main'
 
 ## Dibuat Oleh
