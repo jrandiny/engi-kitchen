@@ -32,6 +32,86 @@ const
     InventoriO := getInventoriBahanOlahan(parse(NamaTxt));
   end;
 
+  procedure promptPredictor(input:string);
+  {I.S. : Terdefinisi perintah-perintah yang mungkin}
+  {F.S. : Dicetak ke layar command yang paling mirip}
+
+  {KAMUS LOKAL}
+  const
+    JUMLAH=16;
+    MINCOCOK=0.49;
+  var
+    Daftar: array[1..JUMLAH]of string;
+    Kecocokan : real;
+    i,j:integer;
+    Total:integer;
+    Sama:integer;
+    MaxCocok:real;
+    IndeksCocok:array[1..JUMLAH]of integer;
+    Neff:integer;
+
+  begin
+    {Isi daftar}
+    Daftar[1]:='load';
+    Daftar[2]:='exit';
+    Daftar[3]:='start';
+    Daftar[4]:='stop';
+    Daftar[5]:='lihatinventori';
+    Daftar[6]:='lihatresep';
+    Daftar[7]:='cariresep';
+    Daftar[8]:='tambahresep';
+    Daftar[9]:='belibahan';
+    Daftar[10]:='olahbahan';
+    Daftar[11]:='jualolahan';
+    Daftar[12]:='jualresep';
+    Daftar[13]:='tidur';
+    Daftar[14]:='makan';
+    Daftar[15]:='istirahat';
+    Daftar[16]:='lihatstatistik';
+
+    {search}
+    MaxCocok:=MINCOCOK;
+    Neff:=1;
+    for i:=1 to JUMLAH do
+    begin
+      sama:=0;
+      total:=Length(input);
+      for j:=1 to total do
+      begin
+        if(j<=Length(Daftar[i]))then
+        begin
+          if(Daftar[i][j]=input[j])then
+          begin
+            sama:=sama+1;
+          end;
+        end;
+      end;
+
+      Kecocokan:=sama/total;
+      if(Kecocokan>MaxCocok)then
+      begin
+        MaxCocok:=Kecocokan;
+        IndeksCocok[Neff]:=i;
+      // end else if(Kecocokan=MaxCocok) then
+      // begin
+      //   Neff:=Neff+1;
+      //   IndeksCocok[Neff]:=i;
+      end;
+    end;
+
+    {Output yang cocok}
+    if((MaxCocok-MINCOCOK)>0.0001)then
+    begin
+      writeln('Mungkin yang dimaksud :');
+      for i:=1 to Neff do
+      begin
+        writeln(Daftar[IndeksCocok[i]]);
+      end;
+    end;
+
+
+  end;
+
   procedure prompt(var Diketik:string);
   {I.S. : isSimulasiAktif terdefinisi}
   {F.S. : variabel userInput yang menyimpan masukan command dari pengguna terisi}
@@ -494,7 +574,7 @@ begin
     if(not(isInputValid))then
     begin
       writeln('ERROR : Main -> Perintah tidak valid');
-      showHelp();
+      promptPredictor(InputTerproses.Perintah);
     end;
 
 
