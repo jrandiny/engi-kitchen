@@ -7,8 +7,8 @@ interface
 
   type UserInput = record
     Perintah:string;
-    Opsi1:string;
-    Opsi2:string;
+    Neff:integer;
+    Opsi:array[1..NMAX]of string;
   end;
 
   type Tabel = record

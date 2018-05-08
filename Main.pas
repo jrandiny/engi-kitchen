@@ -144,41 +144,41 @@ const
   var
     i: integer;
     Indeks: integer;
-    x: string;
+    Sementara: string;
     Hasil:UserInput;
+
   {Algoritma}
   begin
-    x:= '';
+    Sementara:= '';
     i:=1;
     Indeks:=1;
     Hasil.Perintah := '';
-    Hasil.Opsi1 := '';
-    Hasil.Opsi2 := '';
+    Hasil.Neff:=0;
 
+    {Looping semua input}
     while (i<=length(Input)) do
     begin
       if ((Input[i]=' ') or (i=length(Input))) then
       begin
         if(i=length(Input))then
         begin
-          x := x + Input[i];
+          Sementara := Sementara + Input[i];
         end;
-        case Indeks of
-          1 : begin
-            Hasil.Perintah:=x;
-          end;
-          2 : begin
-            Hasil.Opsi1:=x;
-          end;
-          3 : begin
-            Hasil.Opsi2:=x;
-          end;
+
+        if (Indeks=1)then
+        begin
+          Hasil.Perintah:=Sementara;
+        end else
+        begin
+          Hasil.Neff:=Hasil.Neff+1;
+          Hasil.Opsi[Hasil.Neff]:=Sementara;
         end;
+
         Indeks:=Indeks+1;
-        x:='';
+        Sementara:='';
       end else
       begin
-        x:=x + Input[i];
+        Sementara:=Sementara + Input[i];
       end;
 
       i:=i+1;
@@ -284,18 +284,18 @@ begin
         'start' : begin
           if(LoadSukses)then
           begin
-            if (InputTerproses.Opsi1 = '') then
+            if (InputTerproses.Neff = 0) then
             begin
         			write('Nomor simulasi: ');
-        			readln(InputTerproses.Opsi1);
+        			readln(InputTerproses.Opsi[1]);
             end;
-            Val(InputTerproses.Opsi1,OpsiAngka,KodeError);
+            Val(InputTerproses.Opsi[1],OpsiAngka,KodeError);
             if(KodeError<>0)then
             begin
               writeln('ERROR : Main -> Input opsi bukan angka');
             end else
             begin
-              loadInventori(InputTerproses.Opsi1);
+              loadInventori(InputTerproses.Opsi[1]);
               if(LoadSukses)then
               begin
                 startSimulasi(OpsiAngka,Error);
@@ -327,18 +327,20 @@ begin
           hentikanSimulasi();
         end;
         'belibahan' : begin
-    		  if (InputTerproses.Opsi1 = '') then
+    		  if (InputTerproses.Neff < 1 ) then
     		  begin
       			write('Nama bahan: ');
-      			readln(InputTerproses.Opsi1);
+      			readln(InputTerproses.Opsi[1]);
     		  end;
-          formatUserInput(InputTerproses.Opsi1);
-    		  if (InputTerproses.Opsi2 = '') then
-    		  begin
-      			write('Jumlah bahan: ');
-      			readln(InputTerproses.Opsi2);
-    		  end;
-          Val(InputTerproses.Opsi2,OpsiAngka,KodeError);
+          formatUserInput(InputTerproses.Opsi[1]);
+
+          if (InputTerproses.Neff < 2) then
+          begin
+            write('Jumlah bahan: ');
+      			readln(InputTerproses.Opsi[2]);
+          end;
+          Val(InputTerproses.Opsi[2],OpsiAngka,KodeError);
+
           if(KodeError<>0)then
           begin
             writeln('ERROR : Main -> Jumlah bahan harus berupa angka');
@@ -347,48 +349,48 @@ begin
             pakeEnergi(Error);
             if(not(Error)) then
             begin
-              DeltaUang := beliBahan(InputTerproses.Opsi1, OpsiAngka);
+              DeltaUang := beliBahan(InputTerproses.Opsi[1], OpsiAngka);
               if(DeltaUang<>-1)then
               begin
                 pakaiUang(DeltaUang+1, Error);
                 ubahStatistik(1, OpsiAngka);
-                writeln('Berhasil membeli ', InputTerproses.Opsi1);
+                writeln('Berhasil membeli ', InputTerproses.Opsi[1]);
               end;
             end;
           end;
         end;
         'olahbahan' : begin
-          if (InputTerproses.Opsi1 = '') then
+          if (InputTerproses.Neff = 0) then
           begin
             write('Nama bahan olahan: ');
-            readln(InputTerproses.Opsi1);
+            readln(InputTerproses.Opsi[1]);
           end;
-          formatUserInput(InputTerproses.Opsi1);
+          formatUserInput(InputTerproses.Opsi[1]);
           pakeEnergi(Error);
           if(not(Error)) then
           begin
-            olahBahan(InputTerproses.Opsi1, Error);
+            olahBahan(InputTerproses.Opsi[1], Error);
             if not(Error) then
             begin
               ubahStatistik(2,1);
-              writeln('Berhasil membuat ', InputTerproses.Opsi1);
+              writeln('Berhasil membuat ', InputTerproses.Opsi[1]);
             end;
           end;
         end;
         'jualolahan' : begin
-          if (InputTerproses.Opsi1 = '') then
+          if (InputTerproses.Neff < 1) then
           begin
-            write(InputTerproses.Opsi1);
             write('Nama bahan olahan: ');
-    			  readln(InputTerproses.Opsi1);
+    			  readln(InputTerproses.Opsi[1]);
           end;
-          formatUserInput(InputTerproses.Opsi1);
-		      if (InputTerproses.Opsi2 = '') then
+          formatUserInput(InputTerproses.Opsi[1]);
+		      if (InputTerproses.Neff < 2) then
     		  begin
     			  write('Jumlah bahan olahan untuk dijual: ');
-    			  readln(InputTerproses.Opsi2);
+    			  readln(InputTerproses.Opsi[2]);
     		  end;
-    		  Val(InputTerproses.Opsi2,OpsiAngka,KodeError);
+    		  Val(InputTerproses.Opsi[2],OpsiAngka,KodeError);
+
     		  if(KodeError<>0)then
     		  begin
     		    writeln('ERROR : Main -> Jumlah bahan untuk dijual harus berupa angka.');
@@ -397,32 +399,33 @@ begin
             pakeEnergi(Error);
             if(not(Error)) then
             begin
-              DeltaUang:=jualOlahan(InputTerproses.Opsi1, OpsiAngka);
+              DeltaUang:=jualOlahan(InputTerproses.Opsi[1], OpsiAngka);
               if (DeltaUang<>-1) then
               begin
                 tambahUang(DeltaUang+1);
                 ubahStatistik(3,OpsiAngka);
-                writeln('Berhasil menjual ', InputTerproses.Opsi1);
+                writeln('Berhasil menjual ', InputTerproses.Opsi[1]);
               end;
             end;
           end;
         end;
         'jualresep' : begin
-          if (InputTerproses.Opsi1 = '') then
+          if (InputTerproses.Neff = 0) then
           begin
       			write('Nama resep: ');
-      			readln(InputTerproses.Opsi1);
+      			readln(InputTerproses.Opsi[1]);
     		  end;
-          formatUserInput(InputTerproses.Opsi1);
+          formatUserInput(InputTerproses.Opsi[1]);
+
           pakeEnergi(Error);
           if(not(Error)) then
           begin
-            DeltaUang:=jualResep(InputTerproses.Opsi1);
+            DeltaUang:=jualResep(InputTerproses.Opsi[1]);
             if (DeltaUang <> -1) then
             begin
               tambahUang(DeltaUang+1);
               ubahStatistik(4, 1);
-              writeln('Berhasil menjual ', InputTerproses.Opsi1);
+              writeln('Berhasil menjual ', InputTerproses.Opsi[1]);
             end;
           end;
         end;
@@ -484,18 +487,18 @@ begin
       'lihatinventori' : begin
         if(not(isSimulasiAktif))then
         begin
-          if (InputTerproses.Opsi1 = '') then
+          if (InputTerproses.Neff = 0) then
           begin
             write('Nomor Inventori: ');
-            readln(InputTerproses.Opsi1);
+            readln(InputTerproses.Opsi[1]);
           end;
-          Val(InputTerproses.Opsi1,OpsiAngka,KodeError);
+          Val(InputTerproses.Opsi[1],OpsiAngka,KodeError);
     		  if(KodeError<>0)then
     		  begin
     		    writeln('ERROR : Main -> Nomor inventori harus berupa angka.');
     		  end else
           begin
-            loadInventori(InputTerproses.Opsi1);
+            loadInventori(InputTerproses.Opsi[1]);
             if(LoadSukses)then
             begin
               sortArray();
@@ -514,23 +517,24 @@ begin
       end;
 
       'cariresep' : begin
-        if (InputTerproses.Opsi1 = '') then
+        if (InputTerproses.Neff = 0) then
         begin
           write('Nama resep: ');
-          readln(InputTerproses.Opsi1);
+          readln(InputTerproses.Opsi[1]);
         end;
-        formatUserInput(InputTerproses.Opsi1);
-        cariResep(InputTerproses.Opsi1);
+        formatUserInput(InputTerproses.Opsi[1]);
+        cariResep(InputTerproses.Opsi[1]);
       end;
 
       'tambahresep' : begin
-        if(InputTerproses.Opsi1 = '') then
+        if(InputTerproses.Neff = 0) then
         begin
       		write('Nama resep: ');
-      		readln(InputTerproses.Opsi1);
+      		readln(InputTerproses.Opsi[1]);
     	  end;
-        formatUserInput(InputTerproses.Opsi1);
-        ResepBaru.Nama := InputTerproses.Opsi1;
+        formatUserInput(InputTerproses.Opsi[1]);
+
+        ResepBaru.Nama := InputTerproses.Opsi[1];
         write('Harga: ');
         readln(StringInput);
         Val(StringInput,HargaResep,KodeError);
