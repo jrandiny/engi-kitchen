@@ -146,6 +146,7 @@ const
     Indeks: integer;
     Sementara: string;
     Hasil:UserInput;
+    Separator:char;
 
   {Algoritma}
   begin
@@ -154,17 +155,30 @@ const
     Indeks:=1;
     Hasil.Perintah := '';
     Hasil.Neff:=0;
+    Separator:=' ';
 
     {Looping semua input}
     while (i<=length(Input)) do
     begin
-      if ((Input[i]=' ') or (i=length(Input))) then
+
+      {Jika separator, data biasa, atau habis}
+      if ((Input[i]='"')and(Separator=' '))then
       begin
+        Separator:='"';
+      end else if ((Input[i]=Separator) or (i=length(Input))) then
+      begin
+
+        {Jika habis langsung tambahkan input terakhir}
         if(i=length(Input))then
         begin
-          Sementara := Sementara + Input[i];
+          {tambahkan kecuali jika "}
+          if (Separator<>'"')then
+          begin
+            Sementara := Sementara + Input[i];
+          end;
         end;
 
+        {Masukkan ke tempat yang benar}
         if (Indeks=1)then
         begin
           Hasil.Perintah:=Sementara;
@@ -176,6 +190,14 @@ const
 
         Indeks:=Indeks+1;
         Sementara:='';
+
+        {Skip satu jika separator menggunakan "}
+        if (Separator='"')then
+        begin
+          Separator:=' ';
+          i:=i+1;
+        end;
+
       end else
       begin
         Sementara:=Sementara + Input[i];
@@ -184,6 +206,7 @@ const
       i:=i+1;
 
     end;
+
     bacaInput:=Hasil;
   end;
 
