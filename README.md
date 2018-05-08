@@ -1,6 +1,6 @@
 # Engi's Kitchen
 
-Sebuah program simulasi restoran sederhana dibuat untuk memenuhi tugas mata kuliah dasar pemograman
+Sebuah program simulasi restoran sederhana yang awalnya dibuat untuk memenuhi tugas mata kuliah dasar pemograman, lalu dikembangkan lebih lanjut.
 
 ## Compiling
 Dapat dicompile dengan freepascal versi 32 bit

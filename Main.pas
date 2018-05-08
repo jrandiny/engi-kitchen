@@ -32,7 +32,7 @@ const
     InventoriO := getInventoriBahanOlahan(parse(NamaTxt));
   end;
 
-  procedure promptPredictor(input:string);
+  procedure commandPredictor(input:string);
   {I.S. : Terdefinisi perintah-perintah yang mungkin}
   {F.S. : Dicetak ke layar command yang paling mirip}
 
@@ -78,8 +78,10 @@ const
       total:=Length(input);
       for j:=1 to total do
       begin
+        {Jika panjang input lebih dari perintah, dianggap ketidaksesuain}
         if(j<=Length(Daftar[i]))then
         begin
+          {Jika huruf sama, tambah kesesuaian}
           if(Daftar[i][j]=input[j])then
           begin
             sama:=sama+1;
@@ -87,15 +89,12 @@ const
         end;
       end;
 
+      {Cari persentase kesesuaian}
       Kecocokan:=sama/total;
       if(Kecocokan>MaxCocok)then
       begin
         MaxCocok:=Kecocokan;
         IndeksCocok[Neff]:=i;
-      // end else if(Kecocokan=MaxCocok) then
-      // begin
-      //   Neff:=Neff+1;
-      //   IndeksCocok[Neff]:=i;
       end;
     end;
 
@@ -574,7 +573,7 @@ begin
     if(not(isInputValid))then
     begin
       writeln('ERROR : Main -> Perintah tidak valid');
-      promptPredictor(InputTerproses.Perintah);
+      commandPredictor(InputTerproses.Perintah);
     end;
 
 
