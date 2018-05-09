@@ -1,5 +1,13 @@
 # DAFTAR COMMAND
 
+## Help
+
+Command yang harus dijalankan jika ingin melihat daftar perintah yang diingini.
+
+```
+> help
+```
+
 ## Load
 
 Command yang harus dijalankan pertama kali program dibuka agar dapat menggunakan command-command lain. Ketika dijalankan, akan mengambil data yang tersimpan dari file eksternal dan disimpan dalam variabel sementara dalam program utama. Data tersebut akan digunakan untuk menjalankan simulasi-simulasi. Cara menggunakan command ini adalah:

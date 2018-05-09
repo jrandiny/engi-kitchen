@@ -221,7 +221,7 @@ implementation
         end;
       end else
       begin
-        writeln('ERROR : UInventori -> Bahan yang ingin dibeli tidak terdaftar');
+        writeln('ERROR : UInventori -> Bahan yang ingin dibeli (', input ,') tidak terdaftar');
       end;
     end;
 
@@ -248,7 +248,7 @@ implementation
     begin
       if (InventoriO.Jumlah[IndeksBahan] < JumlahJual) then
       begin
-        writeln('ERROR : UInventori -> Bahan Olahan yang anda ingin jual tidak cukup.');
+        writeln('ERROR : UInventori -> Bahan Olahan yang anda ingin jual (',input,') tidak cukup.');
       end else
       begin
         {Mengurangi nilai jumlah bahan olahan di inventori sebesar kuantitas yang dijual}
@@ -259,7 +259,7 @@ implementation
       end;
     end else
     begin
-      writeln('ERROR : UInventori -> Bahan Olahan yang anda ingin jual tidak ada.');
+      writeln('ERROR : UInventori -> Bahan Olahan yang anda ingin jual(',input ,')tidak ada.');
     end;
     jualOlahan := UangDapat
   end;
@@ -293,8 +293,8 @@ implementation
         if (not(isBahanAda(DaftarBahanO.Isi[IndeksBahan].Bahan[j]))) then
         begin
           BisaBuat := false;
-          write('ERROR : UInventori -> Tidak ada bahan ');
-          writeln(DaftarBahanO.Isi[IndeksBahan].Bahan[j]);
+          write('ERROR : UInventori -> Tidak ada bahan yang dibutuhkan (');
+          writeln(DaftarBahanO.Isi[IndeksBahan].Bahan[j],')');
         end;
         j := j+1;
       end;

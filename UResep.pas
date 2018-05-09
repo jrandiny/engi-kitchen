@@ -165,7 +165,7 @@ Implementation
       if(input.Harga<ceil(1125/1000*HargaBahan))then
       begin
         InputValid:=false;
-        writeln('ERROR : UResep -> Harga kurang dari 112,5% harga bahan');
+        writeln('ERROR : UResep -> Harga kurang dari 112,5% harga bahan',ceil(1125/1000*HargaBahan));
 				Error := true;
       end;
 
