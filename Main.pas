@@ -28,8 +28,11 @@ const
     LoadSukses:=true;
     NamaTxt := 'inventori_bahan_mentah_'+nomor+'.txt';
     InventoriM := getInventoriBahanMentah(parse(NamaTxt));
+    InventoriM.Sorted:=false;
     NamaTxt := 'inventori_bahan_olahan_'+nomor+'.txt';
     InventoriO := getInventoriBahanOlahan(parse(NamaTxt));
+    InventoriO.sorted:=false;
+    sortArray();
   end;
 
   procedure commandPredictor(input:string);
@@ -244,6 +247,8 @@ begin
   DaftarBahanM := getBahanMentah(parse('bahan_mentah.txt'));
   DaftarBahanO := getBahanOlahan(parse('bahan_olahan.txt'));
   ResepResep := getResep(parse('resep.txt'));
+  ResepResep.Sorted:=false;
+  sortResep();
   SemuaSimulasi:= getSimulasi(parse('simulasi.txt'));
 end;
 

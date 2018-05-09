@@ -86,23 +86,29 @@ Implementation
 		temp : Resep;
 	{Algoritma procedure sortResep}
 	begin
-    {Bubble sort}
-		N := ResepResep.Neff;
-		if (N>1) then
-		begin
-			for b:=1 to N do
-			begin
-				for k:=N downto b+1 do
-				begin
-					if (ResepResep.Isi[k].Nama < ResepResep.Isi[k-1].Nama) then
-					begin
-						temp := ResepResep.Isi[k];
-						ResepResep.Isi[k] := ResepResep.Isi[k-1];
-						ResepResep.Isi[k-1] := temp;
-					end;
-				end;
-			end;
-		end;
+    if(not(ResepResep.Sorted))then
+    begin
+      {Bubble sort}
+  		N := ResepResep.Neff;
+  		if (N>1) then
+  		begin
+  			for b:=1 to N do
+  			begin
+  				for k:=N downto b+1 do
+  				begin
+  					if (ResepResep.Isi[k].Nama < ResepResep.Isi[k-1].Nama) then
+  					begin
+  						temp := ResepResep.Isi[k];
+  						ResepResep.Isi[k] := ResepResep.Isi[k-1];
+  						ResepResep.Isi[k-1] := temp;
+  					end;
+  				end;
+  			end;
+  		end;
+    end;
+
+    ResepResep.Sorted := true;
+
 	end;
 
 	// Proedur untuk menambah resep
@@ -182,6 +188,8 @@ Implementation
         begin
           ResepResep.Isi[ResepResep.Neff].Bahan[i] := input.Bahan[i];
         end;
+
+        ResepResep.Sorted:=false;
       end;
 		end;
 

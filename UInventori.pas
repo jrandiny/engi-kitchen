@@ -213,6 +213,8 @@ implementation
             InventoriM.Neff := InventoriM.Neff + 1;
             InventoriM.Total := InventoriM.Total + JumlahBeli;
 
+            InventoriM.Sorted:=false;
+
           end else
           begin
             InventoriM.Jumlah[IndeksSama] := InventoriM.Jumlah[IndeksSama] + JumlahBeli;
@@ -331,6 +333,8 @@ implementation
           InventoriO.Jumlah[InventoriO.Neff+1] := 1;
           InventoriO.TanggalBuat[InventoriO.Neff +1] := SimulasiAktif.Tanggal;
           InventoriO.Neff := InventoriO.Neff + 1;
+
+          InventoriO.Sorted := false;
         end else
         begin
           InventoriO.Jumlah[IndeksSama] := InventoriO.Jumlah[IndeksSama] + 1;
@@ -413,44 +417,86 @@ implementation
     n1, n2  :   integer;
     i       :   integer;
     tempM   :   BahanMentah;
+    tempT   :   Tanggal; {temporary tanggal}
+    tempJ   :   integer; {temporary jumlah}
     tempO   :   BahanOlahan;
-    newn : integer;
+    newn    :   integer;
+    kondisi1:   boolean;
+    kondisi2:   boolean;
 
   {Algoritma - sortArray}
   begin
-    {sorting bubble sort}
-    n1:= InventoriM.Neff;
-    n2:= InventoriO.Neff;
+    if(not(InventoriM.Sorted))then
+    begin
+      writeln('aorting');
+      {sorting bubble sort}
+      n1:= InventoriM.Neff;
       repeat
         newn:=0;
         for i:= 2 to InventoriM.Neff do
         begin
           {sorting alfabet}
-          if (InventoriM.Isi[i-1].Nama > InventoriM.Isi[i].Nama) then
+          kondisi1:=InventoriM.Isi[i-1].Nama > InventoriM.Isi[i].Nama;
+          kondisi2:=isTanggalDuluan(InventoriM.TanggalBeli[i],InventoriM.TanggalBeli[i-1])and(InventoriM.Isi[i-1].Nama = InventoriM.Isi[i].Nama);
+
+          if (kondisi1 or kondisi2) then
           begin
+            tempT:=InventoriM.TanggalBeli[i-1];
+            tempJ:=InventoriM.Jumlah[i-1];
             tempM :=InventoriM.Isi[i-1];
+
             InventoriM.Isi[i-1] := InventoriM.Isi[i];
+            InventoriM.TanggalBeli[i-1] := InventoriM.TanggalBeli[i];
+            InventoriM.Jumlah[i-1] := InventoriM.Jumlah[i];
+
             InventoriM.Isi[i] := tempM;
+            InventoriM.TanggalBeli[i]:=tempT;
+            InventoriM.Jumlah[i]:=tempJ;
+
             newn := i;
           end;
         end;
         n1 := newn;
       until (n1 = 0); {hingga tersort}
+    end;
+
+    if(not(InventoriO.Sorted))then
+    begin
+      writeln('sorting');
+      {sorting bubble sort}
+      n2:= InventoriO.Neff;
+
       repeat
         newn:=0;
         for i:=2 to InventoriO.Neff do
         begin
-          {sorting alfabet}
-          if InventoriO.isi[i-1].Nama > InventoriO.Isi[i].Nama then
+          {sorting alfabet dan tanggal}
+          kondisi1:=InventoriO.Isi[i-1].Nama > InventoriO.Isi[i].Nama;
+          kondisi2:=isTanggalDuluan(InventoriO.TanggalBuat[i],InventoriO.TanggalBuat[i-1])and(InventoriO.Isi[i-1].Nama = InventoriO.Isi[i].Nama);
+
+          if (kondisi1 or kondisi2) then
           begin
+            tempT:=InventoriO.TanggalBuat[i-1];
+            tempJ:=InventoriO.Jumlah[i-1];
             tempO:=InventoriO.Isi[i-1];
+
             InventoriO.Isi[i-1]:= InventoriO.Isi[i];
+            InventoriO.TanggalBuat[i-1] := InventoriO.TanggalBuat[i];
+            InventoriO.Jumlah[i-1] := InventoriO.Jumlah[i];
+
             InventoriO.Isi[i]:= tempO;
+            InventoriO.TanggalBuat[i]:=tempT;
+            InventoriO.Jumlah[i]:=tempJ;
+
             newn := i;
           end;
         end;
         n2:= newn;
-    until (n2 = 0); {hingga tersort}
+      until (n2 = 0); {hingga tersort}
+    end;
+
+    InventoriM.Sorted := true;
+    InventoriO.Sorted := true;
   end;
 
   function searchIndex(input : string; kode : string): integer;

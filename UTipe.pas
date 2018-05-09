@@ -50,6 +50,7 @@ interface
     Isi:array[1..NMAX] of BahanMentah;
     Jumlah:array[1..NMAX] of integer;
     TanggalBeli:array[1..NMAX] of Tanggal;
+    Sorted:boolean;
     Total:integer;
     Neff:integer;
   end;
@@ -58,6 +59,7 @@ interface
     Isi:array[1..NMAX] of BahanOlahan;
     Jumlah:array[1..NMAX] of integer;
     TanggalBuat:array[1..NMAX] of Tanggal;
+    Sorted:boolean;
     Total:integer;
     Neff:integer;
   end;
@@ -72,6 +74,7 @@ interface
   type DaftarResep = record
     Isi:array[1..NMAX]of Resep;
     Neff:integer;
+    Sorted:boolean;
   end;
 
   type Simulasi = record
