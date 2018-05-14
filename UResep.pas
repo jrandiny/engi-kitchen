@@ -2,7 +2,7 @@ Unit UResep;
 
 interface
 
-Uses UInventori,UTipe,sysutils,math;
+Uses UInventori,UTipe,UUI,sysutils,math;
 
 	var
 		ResepResep : DaftarResep;
@@ -126,9 +126,7 @@ Implementation
     {cek apa sudah ada dengan nama sama}
 		if (isResepAda(input.Nama)) then
 		begin
-      write('ERROR : UResep -> Resep dengan nama');
-      write(input.nama);
-      writeln('sudah ada');
+      writeError('UResep','Resep dengan nama ' + input.nama + ' sudah ada');
 			Error := true;
 		end else
 		begin
@@ -160,9 +158,7 @@ Implementation
 
         if(not(IsBahanAda))then
         begin
-          write('ERROR : UResep -> Ada bahan yang tidak terdaftar (');
-          write(input.Bahan[i]);
-          writeln(')');
+          writeError('UResep','Ada bahan yang tidak terdaftar (' + input.Bahan[i] +')');
 					Error := true;
         end;
       end;
@@ -171,7 +167,7 @@ Implementation
       if(input.Harga<ceil(1125/1000*HargaBahan))then
       begin
         InputValid:=false;
-        writeln('ERROR : UResep -> Harga kurang dari 112,5% harga bahan',ceil(1125/1000*HargaBahan));
+        writeError('UResep','Harga kurang dari 112,5% harga bahan (' + IntToStr(ceil(1125/1000*HargaBahan)) + ')');
 				Error := true;
       end;
 
@@ -225,9 +221,7 @@ Implementation
 			end;
 		end else
     begin
-      write('ERROR : UResep -> Resep dengan nama ');
-      write(NamaResep);
-      writeln(' tidak ada');
+      writeError('UResep','Resep dengan nama ' + NamaResep + ' tidak ada');
     end;
 	end;
 
@@ -283,9 +277,7 @@ Implementation
   			begin
           if(not(IsBahanAda(ResepResep.Isi[indeks].Bahan[j])))then
           begin
-            write('ERROR : UResep -> Ada bahan yang tidak ada (');
-            write(ResepResep.Isi[indeks].Bahan[j]);
-            writeln(')');
+            writeError('UResep','Ada bahan yang tidak ada (' + ResepResep.Isi[indeks].Bahan[j] + ')');
             adabahan:=false;
           end;
   			end;
@@ -304,8 +296,7 @@ Implementation
 
 			end else
       begin
-        write('ERROR : UResep -> Tidak ada resep bernama ');
-        writeln(Hidangan);
+        writeError('UResep','Tidak ada resep bernama ' + Hidangan);
       end;
         jualResep:=HasilUang;
 		end;
