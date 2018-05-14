@@ -2,7 +2,7 @@ unit USimulasi;
 
 interface
 uses
-	UTipe, UFile, UTanggal;
+	UTipe, UFile, UTanggal,UUI;
 var
 	SimulasiAktif : Simulasi;
   SemuaSimulasi : DaftarSimulasi;
@@ -86,7 +86,7 @@ implementation
     end else
     begin
       Error := true;
-      writeln('ERROR : USimulasi -> tidak cukup uang untuk upgrade');
+      writeError('USimulasi','Tidak cukup uang untuk upgrade');
     end;
 
   end;
@@ -116,7 +116,7 @@ implementation
 	  end else
     begin
       Error := true;
-		  writeln('ERROR : USimulasi -> Energi Anda sudah habis');
+      writeError('USimulasi','Energi sudah habis');
 	  end;
   end;
 
@@ -131,7 +131,7 @@ implementation
 		  BanyakMakan := BanyakMakan + 1;
 	  end else
     begin
-		  writeln('ERROR : USimulasi -> Jatah makan Anda sudah habis');
+      writeError('USimulasi','Jatah makan sudah habis');
 	  end;
   end;
 
@@ -146,7 +146,7 @@ implementation
 		  BanyakIstirahat := BanyakIstirahat + 1;
 	  end else
     begin
-      writeln('ERROR : USimulasi -> Jatah istirahat Anda sudah habis')
+      writeError('USimulasi','Jatah istirahat sudah habis');
     end;
   end;
 
@@ -166,7 +166,7 @@ implementation
 	  end else
     begin
 		  Error := true;
-	  	writeln('ERROR : USimulasi -> Tidur dapat dilakukan setelah melakukan minimal satu aksi lain.');
+      writeError('USimulasi','Tidur dapat dilakukan setelah melakukan minimal satu aksi lain');
 	  end;
   end;
 
@@ -208,7 +208,7 @@ implementation
 
   	end else
     begin
-  		writeln('ERROR : USimulasi -> Error dalam memulai simulasi. Nomor simulasi tidak ditemukan');
+      writeError('USimulasi','Nomor simulasi tidak ditemukan');
       ERROR := true;
   	end;
   end;
@@ -236,7 +236,7 @@ implementation
 	  end else
     begin
       Error := true;
-		  writeln('ERROR : USimulasi -> Uang Anda tidak cukup')
+      writeError('USimulasi','Uang tidak cukup');
 	  end;
   end;
 
