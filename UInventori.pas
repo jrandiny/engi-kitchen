@@ -2,7 +2,7 @@ unit UInventori;
 
 interface
 
-  uses UTipe,UTanggal,USimulasi,sysutils;
+  uses UTipe,UTanggal,USimulasi,UUI,sysutils;
 
   var
     DaftarBahanM      : DaftarBahanMentah;
@@ -175,7 +175,7 @@ implementation
     {cek apa masih ada kapasitas}
     if ((InventoriM.Total + InventoriO.Total + JumlahBeli) > SimulasiAktif.Kapasitas) then
     begin
-      writeln('ERROR : UInventori -> Inventori tidak cukup');
+      writeError('UInventori','Inventori tidak cukup');
     end else
     begin
       {cek apa bahan ada}
@@ -185,7 +185,7 @@ implementation
         {cek apa ada uang}
         if ((DaftarBahanM.Isi[IndeksBahan].Harga*JumlahBeli) > SimulasiAktif.TotalUang) then
         begin
-          writeln('ERROR : UInventori -> Uang tidak cukup');
+          writeError('UInventori','Uang tidak cukup');
         end else
         begin
           Uang:=DaftarBahanM.Isi[IndeksBahan].Harga*JumlahBeli;
@@ -223,7 +223,7 @@ implementation
         end;
       end else
       begin
-        writeln('ERROR : UInventori -> Bahan yang ingin dibeli (', input ,') tidak terdaftar');
+        writeError('UInventori','Bahan yang ingin dibeli (' + input + ') tidak terdaftar');
       end;
     end;
 
@@ -250,7 +250,7 @@ implementation
     begin
       if (InventoriO.Jumlah[IndeksBahan] < JumlahJual) then
       begin
-        writeln('ERROR : UInventori -> Bahan Olahan yang anda ingin jual (',input,') tidak cukup.');
+        writeError('UInventori','Bahan olahan yang ingin dijual (' + input + ') tidak cukup');
       end else
       begin
         {Mengurangi nilai jumlah bahan olahan di inventori sebesar kuantitas yang dijual}
@@ -261,7 +261,7 @@ implementation
       end;
     end else
     begin
-      writeln('ERROR : UInventori -> Bahan Olahan yang anda ingin jual(',input ,')tidak ada.');
+      writeError('UInventori','Bahan olahan yang ingin dijual (' + input + ') tidak ada');
     end;
     jualOlahan := UangDapat
   end;
@@ -295,8 +295,7 @@ implementation
         if (not(isBahanAda(DaftarBahanO.Isi[IndeksBahan].Bahan[j]))) then
         begin
           BisaBuat := false;
-          write('ERROR : UInventori -> Tidak ada bahan yang dibutuhkan (');
-          writeln(DaftarBahanO.Isi[IndeksBahan].Bahan[j],')');
+          writeError('UInventori','Tidak ada bahan yang dibutuhkan (' + DaftarBahanO.Isi[IndeksBahan].Bahan[j] + ')');
         end;
         j := j+1;
       end;
@@ -344,14 +343,12 @@ implementation
 
       end else
       begin
-        write('ERROR : UInventori -> tidak bisa membuat ');
-        writeln(input);
+        writeError('UInventori','Tidak bisa membuat ' + input);
         Error := true;
       end;
     end else
     begin
-      write('ERROR : UInventori -> tidak ada bahan olahan dengan nama ');
-      writeln(input);
+      writeError('UInventori','Tidak ada bahan olahan dengan nama ' + input);
       Error := true;
     end;
   end;
@@ -404,9 +401,7 @@ implementation
     end;
     if (Error) then
     begin
-      write('ERROR : UInventori -> Bahan ');
-      write(input);
-      writeln(' sudah habis atau tidak ada');
+      writeError('UInventori','Bahan ' + input + ' sudah habis atau tidak ada');
     end;
   end;
 
@@ -428,7 +423,6 @@ implementation
   begin
     if(not(InventoriM.Sorted))then
     begin
-      writeln('aorting');
       {sorting bubble sort}
       n1:= InventoriM.Neff;
       repeat
@@ -462,7 +456,6 @@ implementation
 
     if(not(InventoriO.Sorted))then
     begin
-      writeln('sorting');
       {sorting bubble sort}
       n2:= InventoriO.Neff;
 
