@@ -22,6 +22,11 @@ interface
     NBar : integer;
   end;
 
+  type UkuranTabel = record
+    Ukuran : array[1..NMAX] of integer;
+    Kolom : integer;
+  end;
+
   type Tanggal = record
     Hari : integer;
     Bulan : integer;

@@ -230,9 +230,45 @@ Implementation
 	{Kamus Lokal}
 	var
 		i,k : integer;
+    IsiTabel:Tabel;
+    Ukuran:UkuranTabel;
 
 	{Algoritma procedure LihatResep}
 	begin
+    IsiTabel.Isi[1][1]:='NAMA BAHAN';
+    IsiTabel.Isi[1][2]:='HARGA';
+    IsiTabel.Isi[1][3]:='JUMLAH';
+    IsiTabel.Isi[1][4]:='BAHAN';
+
+    Ukuran.Kolom:=4;
+    Ukuran.Ukuran[1]:=20;
+    Ukuran.Ukuran[2]:=12;
+    Ukuran.Ukuran[3]:=12;
+    Ukuran.Ukuran[4]:=12;
+
+    for i := 1 to ResepResep.Neff do
+		begin
+      IsiTabel.Isi[i+1][1]:=ResepResep.Isi[i].Nama;
+      IsiTabel.Isi[i+1][2]:=IntToStr(ResepResep.Isi[i].Harga);
+      IsiTabel.Isi[i+1][3]:=IntToStr(ResepResep.Isi[i].JumlahBahan);
+      IsiTabel.Isi[i+1][4]:='';
+			for k:= 1 to ResepResep.Isi[i].JumlahBahan do
+			begin
+				IsiTabel.Isi[i+1][4]:=IsiTabel.Isi[i+1][4]+ResepResep.Isi[i].Bahan[k];
+        if(k<>ResepResep.Isi[i].JumlahBahan)then
+        begin
+          IsiTabel.Isi[i+1][4]:=IsiTabel.Isi[i+1][4]+', ';
+        end;
+			end;
+		end;
+
+    IsiTabel.NBar:=ResepResep.Neff+1;
+    IsiTabel.NKol:=4;
+
+    writeTabel(IsiTabel,Ukuran,'DAFTAR RESEP');
+
+
+
 		writeln('----------------------DAFTAR RESEP----------------------');
 		writeln('NAMA RESEP          HARGA       JUMLAH      BAHAN       ');
 		for i := 1 to ResepResep.Neff do

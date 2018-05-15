@@ -2,7 +2,7 @@ unit UUI;
 
 interface
 
-  uses UTipe;
+  uses UTipe,math,sysutils;
 
   procedure writeError(asal : string; pesan : string);
   {Mengoutput pesan error}
@@ -48,7 +48,63 @@ interface
   function bacaInput(Input:string):UserInput;
   {memecah Input ke perintah, opsi1,opsi2,dst}
 
+  procedure writeTabel(Input:tabel;Ukuran:UkuranTabel;Judul:string);
+  {I.S. : Terdefinisi tabel, ukuran, dan judulnya}
+  {F.S. : Tercetak tabel sesuai spesifikasi}
+
 implementation
+
+  procedure writeTabel(Input:tabel;Ukuran:UkuranTabel;Judul:string);
+  {I.S. : Terdefinisi tabel, ukuran, dan judulnya}
+  {F.S. : Tercetak tabel sesuai spesifikasi}
+
+  {Kamus lokal}
+  var
+    LokasiJudul:integer;
+    TotalLebar:integer;
+    i,j:integer;
+
+  {Algoritma - writeTabel}
+  begin
+    {Cari total lebar}
+    TotalLebar:=0;
+
+    for i:= 1 to Ukuran.Kolom do
+    begin
+      TotalLebar:=TotalLebar + Ukuran.Ukuran[i];
+    end;
+
+    {Cari lokasi judul tabel}
+    LokasiJudul := ceil((TotalLebar/2)-(length(Judul)/2));
+
+    {Cetak judul tabel}
+    for i:=1 to LokasiJudul do
+    begin
+      write('-');
+    end;
+
+    write(Judul);
+
+    for i:=1 to LokasiJudul do
+    begin
+      write('-');
+    end;
+
+    writeln();
+
+    {Cetak tabel}
+    for i:=1 to Input.NBar do
+    begin
+      for j:=1 to Input.NKol do
+      begin
+        write(Format('%-'+IntToStr(Ukuran.Ukuran[j])+'s',[Input.Isi[i][j]]));
+      end;
+      writeln();
+    end;
+
+    writeln();
+
+  end;
 
   procedure formatUserInput(var Diketik:string);
   {I.S. : terdefinisi input Diketik}

@@ -100,37 +100,59 @@ implementation
   {KAMUS LOKAL}
   var
     i:integer;
+    IsiTabel:Tabel;
+    Ukuran:UkuranTabel;
 
   {ALGORITMA - lihatInventori}
   begin
-    writeln('-------DAFTAR INVENTORI BAHAN MENTAH--------');
-    writeln('NAMA BAHAN          JUMLAH      TANGGAL BELI');
+    IsiTabel.Isi[1][1]:='NAMA BAHAN';
+    IsiTabel.Isi[1][2]:='JUMLAH';
+    IsiTabel.Isi[1][3]:='TANGGAL BELI';
+
+    Ukuran.Kolom:=3;
+    Ukuran.Ukuran[1]:=20;
+    Ukuran.Ukuran[2]:=11;
+    Ukuran.Ukuran[3]:=11;
+
     for i := 1 to InventoriM.Neff do
     begin
-      write(Format('%-20s',[InventoriM.Isi[i].Nama]));
-      write(Format('%-12d',[InventoriM.Jumlah[i]]));
-      write(InventoriM.TanggalBeli[i].Hari);
-      write('/');
-      write(InventoriM.TanggalBeli[i].Bulan);
-      write('/');
-      write(InventoriM.TanggalBeli[i].Tahun);
-      writeln();
+      IsiTabel.Isi[i+1][1]:=InventoriM.Isi[i].Nama;
+      IsiTabel.Isi[i+1][2]:=IntToStr(InventoriM.Jumlah[i]);
+      IsiTabel.Isi[i+1][3]:=IntToStr(InventoriM.TanggalBeli[i].Hari)+'/'+IntToStr(InventoriM.TanggalBeli[i].Bulan)+'/'+IntToStr(InventoriM.TanggalBeli[i].Tahun);
     end;
-    writeln('Total : ', InventoriM.Total);
-    writeln('-------DAFTAR INVENTORI BAHAN OLAHAN--------');
-    writeln('NAMA BAHAN          JUMLAH      TANGGAL BUAT');
+
+    IsiTabel.NBar:=InventoriM.Neff+1;
+    IsiTabel.NKol:=3;
+
+    writeTabel(IsiTabel,Ukuran,'DAFTAR INVENTORI BAHAN MENTAH');
+
+    writelnText('Total : '+ IntToStr(InventoriM.Total));
+    writelnText('');
+
+
+
+    IsiTabel.Isi[1][1]:='NAMA BAHAN';
+    IsiTabel.Isi[1][2]:='JUMLAH';
+    IsiTabel.Isi[1][3]:='TANGGAL BUAT';
+
+    Ukuran.Kolom:=3;
+    Ukuran.Ukuran[1]:=20;
+    Ukuran.Ukuran[2]:=11;
+    Ukuran.Ukuran[3]:=11;
+
     for i:=1 to InventoriO.Neff do
     begin
-      write(Format('%-20s',[InventoriO.Isi[i].Nama]));
-      write(Format('%-12d',[InventoriO.Jumlah[i]]));
-      write(InventoriO.TanggalBuat[i].Hari);
-      write('/');
-      write(InventoriO.TanggalBuat[i].Bulan);
-      write('/');
-      write(InventoriO.TanggalBuat[i].Tahun);
-      writeln();
+      IsiTabel.Isi[i+1][1]:=InventoriO.Isi[i].Nama;
+      IsiTabel.Isi[i+1][2]:=IntToStr(InventoriO.Jumlah[i]);
+      IsiTabel.Isi[i+1][3]:=IntToStr(InventoriO.TanggalBuat[i].Hari)+'/'+IntToStr(InventoriO.TanggalBuat[i].Bulan)+'/'+IntToStr(InventoriO.TanggalBuat[i].Tahun);
     end;
-    writeln('Total : ', InventoriO.Total);
+
+    IsiTabel.NBar:=InventoriO.Neff+1;
+    IsiTabel.NKol:=3;
+
+    writeTabel(IsiTabel,Ukuran,'DAFTAR INVENTORI BAHAN OLAHAN');
+
+    writelnText('Total : '+ IntToStr(InventoriO.Total));
   end;
 
   function isBahanAda(input : string): boolean;
