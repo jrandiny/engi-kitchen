@@ -2,7 +2,7 @@ Unit UResep;
 
 interface
 
-Uses UInventori,UTipe,sysutils,math;
+Uses UInventori,UTipe,UUI,sysutils,math;
 
 	var
 		ResepResep : DaftarResep;
@@ -126,9 +126,7 @@ Implementation
     {cek apa sudah ada dengan nama sama}
 		if (isResepAda(input.Nama)) then
 		begin
-      write('ERROR : UResep -> Resep dengan nama');
-      write(input.nama);
-      writeln('sudah ada');
+      writeError('UResep','Resep dengan nama ' + input.nama + ' sudah ada');
 			Error := true;
 		end else
 		begin
@@ -160,9 +158,7 @@ Implementation
 
         if(not(IsBahanAda))then
         begin
-          write('ERROR : UResep -> Ada bahan yang tidak terdaftar (');
-          write(input.Bahan[i]);
-          writeln(')');
+          writeError('UResep','Ada bahan yang tidak terdaftar (' + input.Bahan[i] +')');
 					Error := true;
         end;
       end;
@@ -171,7 +167,7 @@ Implementation
       if(input.Harga<ceil(1125/1000*HargaBahan))then
       begin
         InputValid:=false;
-        writeln('ERROR : UResep -> Harga kurang dari 112,5% harga bahan',ceil(1125/1000*HargaBahan));
+        writeError('UResep','Harga kurang dari 112,5% harga bahan (' + IntToStr(ceil(1125/1000*HargaBahan)) + ')');
 				Error := true;
       end;
 
@@ -209,25 +205,22 @@ Implementation
       i:=idxNamaResep(NamaResep);
       Neff := ResepResep.Isi[i].JumlahBahan;
 
+      writelnText('');
+      writelnText('Hasil Pencarian');
+      writelnText('---------------');
+
       {tampilkan}
-      write('Nama  : ');
-			writeln(NamaResep);
-      write('Harga : ');
-      writeln(ResepResep.Isi[i].Harga);
-      write('Bahan : ');
-      writeln(Neff);
+      writelnText('Nama  : ' + NamaResep);
+      writelnText('Harga : ' + IntToStr(ResepResep.Isi[i].Harga));
+      writelnText('Bahan : ' + IntToStr(Neff));
 
 			for j:=1 to Neff do
 			begin
-        write(j);
-        write('. ');
-				writeln(ResepResep.Isi[i].Bahan[j]);
+        writelnText(IntToStr(j)+'. '+ResepResep.Isi[i].Bahan[j]);
 			end;
 		end else
     begin
-      write('ERROR : UResep -> Resep dengan nama ');
-      write(NamaResep);
-      writeln(' tidak ada');
+      writeError('UResep','Resep dengan nama ' + NamaResep + ' tidak ada');
     end;
 	end;
 
@@ -236,27 +229,42 @@ Implementation
 	{Kamus Lokal}
 	var
 		i,k : integer;
+    IsiTabel:Tabel;
+    Ukuran:UkuranTabel;
 
 	{Algoritma procedure LihatResep}
 	begin
-		writeln('----------------------DAFTAR RESEP----------------------');
-		writeln('NAMA RESEP          HARGA       JUMLAH      BAHAN       ');
-		for i := 1 to ResepResep.Neff do
+    IsiTabel.Isi[1][1]:='NAMA BAHAN';
+    IsiTabel.Isi[1][2]:='HARGA';
+    IsiTabel.Isi[1][3]:='JUMLAH';
+    IsiTabel.Isi[1][4]:='BAHAN';
+
+    Ukuran.Kolom:=4;
+    Ukuran.Ukuran[1]:=20;
+    Ukuran.Ukuran[2]:=12;
+    Ukuran.Ukuran[3]:=12;
+    Ukuran.Ukuran[4]:=12;
+
+    for i := 1 to ResepResep.Neff do
 		begin
-			write(Format('%-20s',[ResepResep.Isi[i].Nama]));
-			write(Format('%-12d',[ResepResep.Isi[i].Harga]));
-			write(Format('%-12d',[ResepResep.Isi[i].JumlahBahan]));
+      IsiTabel.Isi[i+1][1]:=ResepResep.Isi[i].Nama;
+      IsiTabel.Isi[i+1][2]:=IntToStr(ResepResep.Isi[i].Harga);
+      IsiTabel.Isi[i+1][3]:=IntToStr(ResepResep.Isi[i].JumlahBahan);
+      IsiTabel.Isi[i+1][4]:='';
 			for k:= 1 to ResepResep.Isi[i].JumlahBahan do
 			begin
-				write(ResepResep.Isi[i].Bahan[k]);
+				IsiTabel.Isi[i+1][4]:=IsiTabel.Isi[i+1][4]+ResepResep.Isi[i].Bahan[k];
         if(k<>ResepResep.Isi[i].JumlahBahan)then
         begin
-          write(', ');
+          IsiTabel.Isi[i+1][4]:=IsiTabel.Isi[i+1][4]+', ';
         end;
-
 			end;
-			writeln();
 		end;
+
+    IsiTabel.NBar:=ResepResep.Neff+1;
+    IsiTabel.NKol:=4;
+
+    writeTabel(IsiTabel,Ukuran,'DAFTAR RESEP');
 	end;
 
 	function jualResep(Hidangan : string):longint;
@@ -283,9 +291,7 @@ Implementation
   			begin
           if(not(IsBahanAda(ResepResep.Isi[indeks].Bahan[j])))then
           begin
-            write('ERROR : UResep -> Ada bahan yang tidak ada (');
-            write(ResepResep.Isi[indeks].Bahan[j]);
-            writeln(')');
+            writeError('UResep','Ada bahan yang tidak ada (' + ResepResep.Isi[indeks].Bahan[j] + ')');
             adabahan:=false;
           end;
   			end;
@@ -299,14 +305,11 @@ Implementation
   			    kuranginBahan(ResepResep.Isi[indeks].Bahan[j],isError);
     			end;
 				end;
-
-
-
 			end else
       begin
-        write('ERROR : UResep -> Tidak ada resep bernama ');
-        writeln(Hidangan);
+        writeError('UResep','Tidak ada resep bernama ' + Hidangan);
       end;
+
         jualResep:=HasilUang;
 		end;
 

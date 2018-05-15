@@ -2,7 +2,7 @@ unit UInventori;
 
 interface
 
-  uses UTipe,UTanggal,USimulasi,sysutils;
+  uses UTipe,UTanggal,USimulasi,UUI,sysutils;
 
   var
     DaftarBahanM      : DaftarBahanMentah;
@@ -100,37 +100,59 @@ implementation
   {KAMUS LOKAL}
   var
     i:integer;
+    IsiTabel:Tabel;
+    Ukuran:UkuranTabel;
 
   {ALGORITMA - lihatInventori}
   begin
-    writeln('-------DAFTAR INVENTORI BAHAN MENTAH--------');
-    writeln('NAMA BAHAN          JUMLAH      TANGGAL BELI');
+    IsiTabel.Isi[1][1]:='NAMA BAHAN';
+    IsiTabel.Isi[1][2]:='JUMLAH';
+    IsiTabel.Isi[1][3]:='TANGGAL BELI';
+
+    Ukuran.Kolom:=3;
+    Ukuran.Ukuran[1]:=20;
+    Ukuran.Ukuran[2]:=11;
+    Ukuran.Ukuran[3]:=11;
+
     for i := 1 to InventoriM.Neff do
     begin
-      write(Format('%-20s',[InventoriM.Isi[i].Nama]));
-      write(Format('%-12d',[InventoriM.Jumlah[i]]));
-      write(InventoriM.TanggalBeli[i].Hari);
-      write('/');
-      write(InventoriM.TanggalBeli[i].Bulan);
-      write('/');
-      write(InventoriM.TanggalBeli[i].Tahun);
-      writeln();
+      IsiTabel.Isi[i+1][1]:=InventoriM.Isi[i].Nama;
+      IsiTabel.Isi[i+1][2]:=IntToStr(InventoriM.Jumlah[i]);
+      IsiTabel.Isi[i+1][3]:=IntToStr(InventoriM.TanggalBeli[i].Hari)+'/'+IntToStr(InventoriM.TanggalBeli[i].Bulan)+'/'+IntToStr(InventoriM.TanggalBeli[i].Tahun);
     end;
-    writeln('Total : ', InventoriM.Total);
-    writeln('-------DAFTAR INVENTORI BAHAN OLAHAN--------');
-    writeln('NAMA BAHAN          JUMLAH      TANGGAL BUAT');
+
+    IsiTabel.NBar:=InventoriM.Neff+1;
+    IsiTabel.NKol:=3;
+
+    writeTabel(IsiTabel,Ukuran,'DAFTAR INVENTORI BAHAN MENTAH');
+
+    writelnText('Total : '+ IntToStr(InventoriM.Total));
+    writelnText('');
+
+
+
+    IsiTabel.Isi[1][1]:='NAMA BAHAN';
+    IsiTabel.Isi[1][2]:='JUMLAH';
+    IsiTabel.Isi[1][3]:='TANGGAL BUAT';
+
+    Ukuran.Kolom:=3;
+    Ukuran.Ukuran[1]:=20;
+    Ukuran.Ukuran[2]:=11;
+    Ukuran.Ukuran[3]:=11;
+
     for i:=1 to InventoriO.Neff do
     begin
-      write(Format('%-20s',[InventoriO.Isi[i].Nama]));
-      write(Format('%-12d',[InventoriO.Jumlah[i]]));
-      write(InventoriO.TanggalBuat[i].Hari);
-      write('/');
-      write(InventoriO.TanggalBuat[i].Bulan);
-      write('/');
-      write(InventoriO.TanggalBuat[i].Tahun);
-      writeln();
+      IsiTabel.Isi[i+1][1]:=InventoriO.Isi[i].Nama;
+      IsiTabel.Isi[i+1][2]:=IntToStr(InventoriO.Jumlah[i]);
+      IsiTabel.Isi[i+1][3]:=IntToStr(InventoriO.TanggalBuat[i].Hari)+'/'+IntToStr(InventoriO.TanggalBuat[i].Bulan)+'/'+IntToStr(InventoriO.TanggalBuat[i].Tahun);
     end;
-    writeln('Total : ', InventoriO.Total);
+
+    IsiTabel.NBar:=InventoriO.Neff+1;
+    IsiTabel.NKol:=3;
+
+    writeTabel(IsiTabel,Ukuran,'DAFTAR INVENTORI BAHAN OLAHAN');
+
+    writelnText('Total : '+ IntToStr(InventoriO.Total));
   end;
 
   function isBahanAda(input : string): boolean;
@@ -175,7 +197,7 @@ implementation
     {cek apa masih ada kapasitas}
     if ((InventoriM.Total + InventoriO.Total + JumlahBeli) > SimulasiAktif.Kapasitas) then
     begin
-      writeln('ERROR : UInventori -> Inventori tidak cukup');
+      writeError('UInventori','Inventori tidak cukup');
     end else
     begin
       {cek apa bahan ada}
@@ -185,7 +207,7 @@ implementation
         {cek apa ada uang}
         if ((DaftarBahanM.Isi[IndeksBahan].Harga*JumlahBeli) > SimulasiAktif.TotalUang) then
         begin
-          writeln('ERROR : UInventori -> Uang tidak cukup');
+          writeError('UInventori','Uang tidak cukup');
         end else
         begin
           Uang:=DaftarBahanM.Isi[IndeksBahan].Harga*JumlahBeli;
@@ -223,7 +245,7 @@ implementation
         end;
       end else
       begin
-        writeln('ERROR : UInventori -> Bahan yang ingin dibeli (', input ,') tidak terdaftar');
+        writeError('UInventori','Bahan yang ingin dibeli (' + input + ') tidak terdaftar');
       end;
     end;
 
@@ -250,18 +272,18 @@ implementation
     begin
       if (InventoriO.Jumlah[IndeksBahan] < JumlahJual) then
       begin
-        writeln('ERROR : UInventori -> Bahan Olahan yang anda ingin jual (',input,') tidak cukup.');
+        writeError('UInventori','Bahan olahan yang ingin dijual (' + input + ') tidak cukup');
       end else
       begin
         {Mengurangi nilai jumlah bahan olahan di inventori sebesar kuantitas yang dijual}
         InventoriO.Jumlah[IndeksBahan] := InventoriO.Jumlah[IndeksBahan] - JumlahJual;
         {Menambah UangDapat}
-        UangDapat := UangDapat + (JumlahJual*InventoriO.Isi[IndeksBahan].Harga);
+        UangDapat := (JumlahJual*InventoriO.Isi[IndeksBahan].Harga);
         InventoriO.Total := InventoriO.Total - JumlahJual;
       end;
     end else
     begin
-      writeln('ERROR : UInventori -> Bahan Olahan yang anda ingin jual(',input ,')tidak ada.');
+      writeError('UInventori','Bahan olahan yang ingin dijual (' + input + ') tidak ada');
     end;
     jualOlahan := UangDapat
   end;
@@ -295,8 +317,7 @@ implementation
         if (not(isBahanAda(DaftarBahanO.Isi[IndeksBahan].Bahan[j]))) then
         begin
           BisaBuat := false;
-          write('ERROR : UInventori -> Tidak ada bahan yang dibutuhkan (');
-          writeln(DaftarBahanO.Isi[IndeksBahan].Bahan[j],')');
+          writeError('UInventori','Tidak ada bahan yang dibutuhkan (' + DaftarBahanO.Isi[IndeksBahan].Bahan[j] + ')');
         end;
         j := j+1;
       end;
@@ -344,14 +365,12 @@ implementation
 
       end else
       begin
-        write('ERROR : UInventori -> tidak bisa membuat ');
-        writeln(input);
+        writeError('UInventori','Tidak bisa membuat ' + input);
         Error := true;
       end;
     end else
     begin
-      write('ERROR : UInventori -> tidak ada bahan olahan dengan nama ');
-      writeln(input);
+      writeError('UInventori','Tidak ada bahan olahan dengan nama ' + input);
       Error := true;
     end;
   end;
@@ -404,9 +423,7 @@ implementation
     end;
     if (Error) then
     begin
-      write('ERROR : UInventori -> Bahan ');
-      write(input);
-      writeln(' sudah habis atau tidak ada');
+      writeError('UInventori','Bahan ' + input + ' sudah habis atau tidak ada');
     end;
   end;
 
@@ -428,7 +445,6 @@ implementation
   begin
     if(not(InventoriM.Sorted))then
     begin
-      writeln('aorting');
       {sorting bubble sort}
       n1:= InventoriM.Neff;
       repeat
@@ -462,7 +478,6 @@ implementation
 
     if(not(InventoriO.Sorted))then
     begin
-      writeln('sorting');
       {sorting bubble sort}
       n2:= InventoriO.Neff;
 

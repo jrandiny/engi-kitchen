@@ -2,7 +2,7 @@ unit USimulasi;
 
 interface
 uses
-	UTipe, UFile, UTanggal;
+	UTipe, UFile, UTanggal,UUI,sysutils;
 var
 	SimulasiAktif : Simulasi;
   SemuaSimulasi : DaftarSimulasi;
@@ -86,7 +86,7 @@ implementation
     end else
     begin
       Error := true;
-      writeln('ERROR : USimulasi -> tidak cukup uang untuk upgrade');
+      writeError('USimulasi','Tidak cukup uang untuk upgrade');
     end;
 
   end;
@@ -116,7 +116,7 @@ implementation
 	  end else
     begin
       Error := true;
-		  writeln('ERROR : USimulasi -> Energi Anda sudah habis');
+      writeError('USimulasi','Energi sudah habis');
 	  end;
   end;
 
@@ -131,7 +131,7 @@ implementation
 		  BanyakMakan := BanyakMakan + 1;
 	  end else
     begin
-		  writeln('ERROR : USimulasi -> Jatah makan Anda sudah habis');
+      writeError('USimulasi','Jatah makan sudah habis');
 	  end;
   end;
 
@@ -146,7 +146,7 @@ implementation
 		  BanyakIstirahat := BanyakIstirahat + 1;
 	  end else
     begin
-      writeln('ERROR : USimulasi -> Jatah istirahat Anda sudah habis')
+      writeError('USimulasi','Jatah istirahat sudah habis');
     end;
   end;
 
@@ -166,7 +166,7 @@ implementation
 	  end else
     begin
 		  Error := true;
-	  	writeln('ERROR : USimulasi -> Tidur dapat dilakukan setelah melakukan minimal satu aksi lain.');
+      writeError('USimulasi','Tidur dapat dilakukan setelah melakukan minimal satu aksi lain');
 	  end;
   end;
 
@@ -196,19 +196,19 @@ implementation
       {cek apa sudah selesai simulasinya (hari ke 10)}
       if(SemuaSimulasi.Isi[Indeks-1].JumlahHidup<10)then
       begin
-        writeln('Mulai simulasi ', Nomorsimulasi);
+        writelnText('Mulai simulasi '+IntToStr(Nomorsimulasi));
         SimulasiAktif := SemuaSimulasi.Isi[Indeks-1];
         banyakIstirahat := 0;
         banyakMakan := 0;
       end else
       begin
-        writeln('Simulasi sudah selesai');
+        writelnText('Simulasi sudah selesai');
         Error:=true;
       end;
 
   	end else
     begin
-  		writeln('ERROR : USimulasi -> Error dalam memulai simulasi. Nomor simulasi tidak ditemukan');
+      writeError('USimulasi','Nomor simulasi tidak ditemukan');
       ERROR := true;
   	end;
   end;
@@ -236,7 +236,7 @@ implementation
 	  end else
     begin
       Error := true;
-		  writeln('ERROR : USimulasi -> Uang Anda tidak cukup')
+      writeError('USimulasi','Uang tidak cukup');
 	  end;
   end;
 
@@ -251,21 +251,21 @@ implementation
 
   {Algoritma - lihatStatistik}
   begin
-	  writeln('Nomor Simulasi    : ', SimulasiAktif.Nomor);
-	  writeln('Tanggal           : ', SimulasiAktif.Tanggal.Hari, '/', SimulasiAktif.Tanggal.Bulan, '/', SimulasiAktif.Tanggal.Tahun);
-    writeln('Jumlah Hari Hidup : ', SimulasiAktif.JumlahHidup);
-	  writeln('Jumlah Energi     : ', SimulasiAktif.Energi);
-    writeln();
-	  writeln('Kapasitas Maksimum Inventori : ', SimulasiAktif.Kapasitas);
-    writeln();
-	  writeln('Total Bahan Mentah Dibeli : ', SimulasiAktif.BeliMentah);
-	  writeln('Total Bahan Olahan Dibuat : ', SimulasiAktif.BuatOlahan);
-	  writeln('Total Bahan Olahan Dijual : ', SimulasiAktif.JualOlahan);
-	  writeln('Total Resep Dijual        : ', SimulasiAktif.JualResep);
-    writeln();
-	  writeln('Total Pemasukan   : ', SimulasiAktif.Pemasukan);
-	  writeln('Total Pengeluaran : ', SimulasiAktif.Pengeluaran);
-	  writeln('Total Uang        : ', SimulasiAktif.TotalUang);
+	  writelnText('Nomor Simulasi    : '+ IntToStr(SimulasiAktif.Nomor));
+	  writelnText('Tanggal           : '+ IntToStr(SimulasiAktif.Tanggal.Hari)+ '/'+ IntToStr(SimulasiAktif.Tanggal.Bulan)+ '/'+ IntToStr(SimulasiAktif.Tanggal.Tahun));
+    writelnText('Jumlah Hari Hidup : '+ IntToStr(SimulasiAktif.JumlahHidup));
+	  writelnText('Jumlah Energi     : '+ IntToStr(SimulasiAktif.Energi));
+    writelnText('');
+	  writelnText('Kapasitas Maksimum Inventori : '+ IntToStr(SimulasiAktif.Kapasitas));
+    writelnText('');
+	  writelnText('Total Bahan Mentah Dibeli : '+ IntToStr(SimulasiAktif.BeliMentah));
+	  writelnText('Total Bahan Olahan Dibuat : '+ IntToStr(SimulasiAktif.BuatOlahan));
+	  writelnText('Total Bahan Olahan Dijual : '+ IntToStr(SimulasiAktif.JualOlahan));
+	  writelnText('Total Resep Dijual        : '+ IntToStr(SimulasiAktif.JualResep));
+    writelnText('');
+	  writelnText('Total Pemasukan   : '+ IntToStr(SimulasiAktif.Pemasukan));
+	  writelnText('Total Pengeluaran : '+ IntToStr(SimulasiAktif.Pengeluaran));
+	  writelnText('Total Uang        : '+ IntToStr(SimulasiAktif.TotalUang));
   end;
 
   procedure ubahStatistik(Jenis, Jumlah : integer);

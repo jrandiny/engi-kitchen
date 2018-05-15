@@ -2,7 +2,7 @@ unit UFile;
 
 interface
 
-  uses UTipe,UTanggal,sysutils;
+  uses UTipe,UTanggal,UUI,sysutils;
 
   var
     LoadSukses:boolean;
@@ -65,9 +65,7 @@ implementation
     end;
     if(not(Ketemu))then
     begin
-      write('ERROR : UFile -> Ada entri inventori bahan mentah (');
-      write(Nama);
-      writeln(')  yang tidak punya entri di file bahan mentah');
+      writeError('UFile','Ada entri inventori bahan mentah (' + Nama + ')  yang tidak punya entri di file bahan mentah');
       LoadSukses:=false;
     end;
 
@@ -100,9 +98,7 @@ implementation
     end;
     if(not(Ketemu))then
     begin
-      write('ERROR : UFile -> Ada entri inventori bahan olahan (');
-      write(Nama);
-      writeln(')  yang tidak punya entri di file bahan olahan');
+      writeError('UFile','Ada entri inventori bahan olahan (' + Nama + ')  yang tidak punya entri di file bahan olahan');
       LoadSukses:=false;
     end;
 
@@ -192,8 +188,7 @@ implementation
       close(data);
     end else
     begin
-      write('ERROR : UFile -> Tidak dapat menemukan file ');
-      writeln(NamaFile);
+      writeError('UFile','Tidak dapat menemukan file ' + NamaFile);
       LoadSukses:=false;
     end;
 
@@ -228,8 +223,7 @@ implementation
 
       if(isError)then
       begin
-        write('ERROR : UFile -> Error dalam membaca file bahan mentah, baris ');
-        writeln(i);
+        writeError('UFile','Error dalam membaca file bahan mentah, baris ' + IntToStr(i));
         LoadSukses:=false;
       end;
 
@@ -268,8 +262,7 @@ implementation
 
       if(IsError)then
       begin
-        write('ERROR : UFile -> Error dalam membaca file bahan olahan, baris ');
-        writeln(i);
+        writeError('UFile','Error dalam membaca file bahan olahan, baris ' + IntToStr(i));
         LoadSukses:=false;
       end;
 
@@ -304,7 +297,7 @@ implementation
     {Cek apakah sudah ada daftar bahan mentah agar dapat dicocokkan dengan inventori}
     if(InternalBahanMentah.Isi[1].Nama = '')then
     begin
-      writeln('ERROR : UFile -> File inventori bahan mentah dibaca sebelum file bahan mentah atau file bahan mentah kosong');
+      writeError('UFile','File inventori bahan mentah dibaca sebelum file bahan mentah atau file bahan mentah kosong');
       LoadSukses:=false;
     end else
     begin
@@ -327,8 +320,7 @@ implementation
 
         if(isError)then
         begin
-          write('ERROR : UFile -> Error dalam membaca file inventori bahan mentah, baris ');
-          writeln(i);
+          writeError('UFile', 'Error dalam membaca file inventori bahan mentah, baris ' + IntToStr(i));
           LoadSukses:=false;
         end;
       end;
@@ -356,7 +348,7 @@ implementation
     {Cek apakah sudah ada daftar bahan olahan untuk dicocokkan dengan inventori}
     if(InternalBahanOlahan.Isi[1].Nama = '')then
     begin
-      writeln('ERROR : UFile -> File inventori bahan olahan dibaca sebelum file bahan olahan atau file bahan olahan kosong');
+      writeError('UFile','File inventori bahan olahan dibaca sebelum file bahan olahan atau file bahan olahan kosong');
       LoadSukses:=false;
     end else
     begin
@@ -381,8 +373,7 @@ implementation
 
         if(isError)then
         begin
-          write('ERROR : UFile -> Error dalam membaca file inventori bahan olahan, baris ');
-          writeln(i);
+          writeError('UFile','Error dalam membaca file inventori bahan olahan, baris ' + IntToStr(i));
           LoadSukses:=false;
         end;
       end;
@@ -427,8 +418,7 @@ implementation
 
       if(isError)then
       begin
-        write('ERROR : UFile -> Error dalam membaca file resep, baris ');
-        writeln(i);
+        writeError('UFile','Error dalam membaca file resep, baris ' + IntToStr(i));
         LoadSukses:=false;
       end;
 
@@ -492,8 +482,7 @@ implementation
 
       if(IsError)then
       begin
-        write('ERROR : UFile -> Error dalam membaca file simulasi, baris ');
-        writeln(i);
+        writeError('UFile','Error dalam membaca file simulasi, baris ' + IntToStr(i));
         LoadSukses:=false;
       end;
 

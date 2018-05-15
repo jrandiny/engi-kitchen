@@ -2,7 +2,7 @@ unit UTanggal;
 
 interface
 
-  uses UTipe;
+  uses UUI,UTipe;
 
   function getTanggal(Input:string):Tanggal;
   {Menerima Input string tanggal dalam format dd/mm/yy lalu isi ke bentuk
@@ -150,7 +150,7 @@ begin
                   Val(str,x.Hari,KodeError);
                   if(KodeError<>0)then
                   begin
-                    writeln('ERROR : UTanggal -> Hari bukan integer');
+                    writeError('UTanggal','Hari bukan integer');
                   end;
                 end else
               if (indeks=2) then {indeks 2 = bulan}
@@ -159,13 +159,13 @@ begin
                   Val(str,x.Bulan,KodeError);
                   if(KodeError<>0)then
                   begin
-                    writeln('ERROR : UTanggal -> Bulan bukan integer');
+                    writeError('UTanggal','Bulan bukan integer')
                   end else
                   begin
                     {cek bulan valid}
                     if (x.Bulan>12) or (x.Bulan<1) then
                     begin
-                      writeln('ERROR : UTanggal -> Bulan tidak valid');
+                      writeError('UTanggal','Bulan tidak valid')
                     end;
                   end;
                 end else {indeks 3 = tahun}
@@ -174,13 +174,13 @@ begin
                   Val(str,x.Tahun,KodeError);
                   if(KodeError<>0)then
                   begin
-                    writeln('ERROR : UTanggal -> Tahun bukan integer');
+                    writeError('UTanggal','Tahun bukan integer');
                   end else
                   begin
                     {cek tahun valid}
                     if (x.Tahun<0) then
                     begin
-                      writeln('ERROR : UTanggal -> Tahun tidak valid');
+                      writeError('UTanggal','Tahun tidak valid');
                     end;
                   end;
                 end;
@@ -190,7 +190,7 @@ begin
     {cek hari valid sesuai bulan}
     if (x.Hari>MaxHari(x)) or (x.Hari<1) then
     begin
-      writeln('ERROR : UTanggal -> Hari tidak valid');
+      writeError('UTanggal','Hari tidak valid');
     end;
     getTanggal:=x;
 end;
