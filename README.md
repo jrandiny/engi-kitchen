@@ -18,6 +18,13 @@ Untuk deskripsi lebih jelas tentang tiap perintah, bisa melihat dokumen [Command
 
 Untuk data bisa dilihat di folder 'sample data', jika ingin menggunakan pindahkan file ke folder yang sama dengan program 'Main'
 
+## Milestone
+- [x] Tester
+- [x] UI refactor
+- [ ] Pengujian mendalam
+- [ ] GUI
+- [ ] ???
+
 ## Dibuat Oleh
 ### Pengembangan
 - [@jrandiny](https://github.com/jrandiny/)
