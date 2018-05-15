@@ -205,19 +205,18 @@ Implementation
       i:=idxNamaResep(NamaResep);
       Neff := ResepResep.Isi[i].JumlahBahan;
 
+      writelnText('');
+      writelnText('Hasil Pencarian');
+      writelnText('---------------');
+
       {tampilkan}
-      write('Nama  : ');
-			writeln(NamaResep);
-      write('Harga : ');
-      writeln(ResepResep.Isi[i].Harga);
-      write('Bahan : ');
-      writeln(Neff);
+      writelnText('Nama  : ' + NamaResep);
+      writelnText('Harga : ' + IntToStr(ResepResep.Isi[i].Harga));
+      writelnText('Bahan : ' + IntToStr(Neff));
 
 			for j:=1 to Neff do
 			begin
-        write(j);
-        write('. ');
-				writeln(ResepResep.Isi[i].Bahan[j]);
+        writelnText(IntToStr(j)+'. '+ResepResep.Isi[i].Bahan[j]);
 			end;
 		end else
     begin
