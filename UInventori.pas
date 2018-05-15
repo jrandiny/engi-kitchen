@@ -256,7 +256,7 @@ implementation
         {Mengurangi nilai jumlah bahan olahan di inventori sebesar kuantitas yang dijual}
         InventoriO.Jumlah[IndeksBahan] := InventoriO.Jumlah[IndeksBahan] - JumlahJual;
         {Menambah UangDapat}
-        UangDapat := UangDapat + (JumlahJual*InventoriO.Isi[IndeksBahan].Harga);
+        UangDapat := (JumlahJual*InventoriO.Isi[IndeksBahan].Harga);
         InventoriO.Total := InventoriO.Total - JumlahJual;
       end;
     end else

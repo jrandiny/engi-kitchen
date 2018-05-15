@@ -291,13 +291,11 @@ Implementation
   			    kuranginBahan(ResepResep.Isi[indeks].Bahan[j],isError);
     			end;
 				end;
-
-
-
 			end else
       begin
         writeError('UResep','Tidak ada resep bernama ' + Hidangan);
       end;
+
         jualResep:=HasilUang;
 		end;
 

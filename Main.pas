@@ -187,7 +187,7 @@ begin
               DeltaUang := beliBahan(InputTerproses.Opsi[1], OpsiAngka);
               if(DeltaUang<>-1)then
               begin
-                pakaiUang(DeltaUang+1, Error);
+                pakaiUang(DeltaUang, Error);
                 ubahStatistik(1, OpsiAngka);
                 writelnText('Berhasil membeli ' + InputTerproses.Opsi[1]);
               end;
@@ -234,7 +234,7 @@ begin
               DeltaUang:=jualOlahan(InputTerproses.Opsi[1], OpsiAngka);
               if (DeltaUang<>-1) then
               begin
-                tambahUang(DeltaUang+1);
+                tambahUang(DeltaUang);
                 ubahStatistik(3,OpsiAngka);
                 writelnText('Berhasil menjual ' +  InputTerproses.Opsi[1]);
               end;
@@ -254,7 +254,7 @@ begin
             DeltaUang:=jualResep(InputTerproses.Opsi[1]);
             if (DeltaUang <> -1) then
             begin
-              tambahUang(DeltaUang+1);
+              tambahUang(DeltaUang);
               ubahStatistik(4, 1);
               writelnText('Berhasil menjual ' + InputTerproses.Opsi[1]);
             end;
