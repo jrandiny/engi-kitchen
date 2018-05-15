@@ -5,6 +5,11 @@ interface
     NMAX = 100;
     HARGAUPGRADE = 1000;
 
+  type DaftarPerintah=record
+    Isi : array[1..NMAX] of string;
+    Neff:integer;
+  end;
+
   type UserInput = record
     Perintah:string;
     Neff:integer;
