@@ -266,27 +266,6 @@ Implementation
     IsiTabel.NKol:=4;
 
     writeTabel(IsiTabel,Ukuran,'DAFTAR RESEP');
-
-
-
-		writeln('----------------------DAFTAR RESEP----------------------');
-		writeln('NAMA RESEP          HARGA       JUMLAH      BAHAN       ');
-		for i := 1 to ResepResep.Neff do
-		begin
-			write(Format('%-20s',[ResepResep.Isi[i].Nama]));
-			write(Format('%-12d',[ResepResep.Isi[i].Harga]));
-			write(Format('%-12d',[ResepResep.Isi[i].JumlahBahan]));
-			for k:= 1 to ResepResep.Isi[i].JumlahBahan do
-			begin
-				write(ResepResep.Isi[i].Bahan[k]);
-        if(k<>ResepResep.Isi[i].JumlahBahan)then
-        begin
-          write(', ');
-        end;
-
-			end;
-			writeln();
-		end;
 	end;
 
 	function jualResep(Hidangan : string):longint;
