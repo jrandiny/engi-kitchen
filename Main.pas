@@ -25,8 +25,13 @@ const
   {I.S. : Ada file inventori dan diberi nomor inventori}
   {F.S. : File inventori terload}
 
+  {Kamus lokal}
+  var
+    temp:boolean; {Menyimpan kondisi loadsukes sebelum}
+
   begin
-    LoadSukses:=true;
+    temp:=LoadSukses;
+    LoadInventoriSukses:=true;
     NamaTxt := 'inventori_bahan_mentah_'+nomor+'.txt';
     InventoriM := getInventoriBahanMentah(parse(NamaTxt));
     InventoriM.Sorted:=false;
@@ -34,6 +39,7 @@ const
     InventoriO := getInventoriBahanOlahan(parse(NamaTxt));
     InventoriO.sorted:=false;
     sortArray();
+    LoadSukses:=temp;
   end;
 
   procedure hentikanSimulasi();
@@ -133,7 +139,7 @@ begin
             end else
             begin
               loadInventori(InputTerproses.Opsi[1]);
-              if(LoadSukses)then
+              if(LoadInventoriSukses)then
               begin
                 startSimulasi(OpsiAngka,Error);
                 if(not(Error)) then
@@ -329,9 +335,8 @@ begin
     		  end else
           begin
             loadInventori(InputTerproses.Opsi[1]);
-            if(LoadSukses)then
+            if(LoadInventoriSukses)then
             begin
-              sortArray();
               lihatInventori();
             end else
             begin

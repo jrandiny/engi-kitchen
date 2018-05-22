@@ -6,6 +6,7 @@ interface
 
   var
     LoadSukses:boolean;
+    LoadInventoriSukses:boolean;
 
   function parse(NamaFile:string):Tabel;
   {Menerima input nama file lalu output tabel sementara(data bentukan Tabel) berisi data dari file}
@@ -66,7 +67,7 @@ implementation
     if(not(Ketemu))then
     begin
       writeError('UFile','Ada entri inventori bahan mentah (' + Nama + ')  yang tidak punya entri di file bahan mentah');
-      LoadSukses:=false;
+      LoadInventoriSukses:=false;
     end;
 
     cariBahanMentah:=i;
@@ -99,7 +100,7 @@ implementation
     if(not(Ketemu))then
     begin
       writeError('UFile','Ada entri inventori bahan olahan (' + Nama + ')  yang tidak punya entri di file bahan olahan');
-      LoadSukses:=false;
+      LoadInventoriSukses:=false;
     end;
 
     cariBahanOlahan:=i;
@@ -298,7 +299,7 @@ implementation
     if(InternalBahanMentah.Isi[1].Nama = '')then
     begin
       writeError('UFile','File inventori bahan mentah dibaca sebelum file bahan mentah atau file bahan mentah kosong');
-      LoadSukses:=false;
+      LoadInventoriSukses:=false;
     end else
     begin
       {Untuk setiap data ubah ke format yang dimau}
@@ -321,7 +322,7 @@ implementation
         if(isError)then
         begin
           writeError('UFile', 'Error dalam membaca file inventori bahan mentah, baris ' + IntToStr(i));
-          LoadSukses:=false;
+          LoadInventoriSukses:=false;
         end;
       end;
     end;
@@ -349,7 +350,7 @@ implementation
     if(InternalBahanOlahan.Isi[1].Nama = '')then
     begin
       writeError('UFile','File inventori bahan olahan dibaca sebelum file bahan olahan atau file bahan olahan kosong');
-      LoadSukses:=false;
+      LoadInventoriSukses:=false;
     end else
     begin
       {Untuk setiap data ubah ke format yang dimau}
@@ -374,7 +375,7 @@ implementation
         if(isError)then
         begin
           writeError('UFile','Error dalam membaca file inventori bahan olahan, baris ' + IntToStr(i));
-          LoadSukses:=false;
+          LoadInventoriSukses:=false;
         end;
       end;
     end;
