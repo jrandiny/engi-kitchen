@@ -206,14 +206,14 @@ begin
             tanya('Nama bahan olahan',InputTerproses.Opsi[1]);
           end;
           formatUserInput(InputTerproses.Opsi[1]);
-          pakeEnergi(Error);
-          if(not(Error)) then
+          if(SimulasiAktif.Energi>0)then
           begin
             olahBahan(InputTerproses.Opsi[1], Error);
             if not(Error) then
             begin
               ubahStatistik(2,1);
               writelnText('Berhasil membuat ' + InputTerproses.Opsi[1]);
+              pakeEnergi(Error);
             end;
           end;
         end;
@@ -234,8 +234,7 @@ begin
     		    writeError('Main','Jumlah bahan untuk dijual harus berupa angka');
     		  end else
     		  begin
-            pakeEnergi(Error);
-            if(not(Error)) then
+            if(SimulasiAktif.Energi>1) then
             begin
               DeltaUang:=jualOlahan(InputTerproses.Opsi[1], OpsiAngka);
               if (DeltaUang<>-1) then
@@ -243,6 +242,7 @@ begin
                 tambahUang(DeltaUang);
                 ubahStatistik(3,OpsiAngka);
                 writelnText('Berhasil menjual ' +  InputTerproses.Opsi[1]);
+                pakeEnergi(Error);
               end;
             end;
           end;
@@ -254,8 +254,7 @@ begin
     		  end;
           formatUserInput(InputTerproses.Opsi[1]);
 
-          pakeEnergi(Error);
-          if(not(Error)) then
+          if(SimulasiAktif.Energi>1) then
           begin
             DeltaUang:=jualResep(InputTerproses.Opsi[1]);
             if (DeltaUang <> -1) then
@@ -263,6 +262,7 @@ begin
               tambahUang(DeltaUang);
               ubahStatistik(4, 1);
               writelnText('Berhasil menjual ' + InputTerproses.Opsi[1]);
+              pakeEnergi(Error);
             end;
           end;
         end;
