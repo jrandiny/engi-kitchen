@@ -83,14 +83,15 @@ begin
   writelnText('tambahresep    Menambah resep ke daftar');
   writelnText('');
   writelnText('Perintah khusus dalam simulasi');
-  writelnText('belibahan      Membeli bahan mentah');
-  writelnText('olahbahan      Mengolah bahan mentah jadi olahan');
-  writelnText('jualolahan     Menjual bahan hasil olahan');
-  writelnText('jualresep      Membuat dan menjual makanan sesuai resep');
-  writelnText('tidur          Memajukan hari dan mengembalikan energi serta menghapus item kadaluarsa');
-  writelnText('makan          Menambah 3 energi');
-  writelnText('istirahat      Menambah 1 energi');
-  writelnText('lihatstatistik Melihat statistik');
+  writelnText('belibahan        Membeli bahan mentah');
+  writelnText('olahbahan        Mengolah bahan mentah jadi olahan');
+  writelnText('jualolahan       Menjual bahan hasil olahan');
+  writelnText('jualresep        Membuat dan menjual makanan sesuai resep');
+  writelnText('tidur            Memajukan hari dan mengembalikan energi serta menghapus item kadaluarsa');
+  writelnText('makan            Menambah 3 energi');
+  writelnText('istirahat        Menambah 1 energi');
+  writelnText('lihatstatistik   Melihat statistik');
+  writelnText('upgradeinventori Menambah kapasitas inventori');
 
 end;
 
