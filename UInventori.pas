@@ -407,7 +407,7 @@ implementation
       if (IndeksBahan <> -1) then
       begin
         {cek apa sudah habis}
-        if (InventoriM.Jumlah[IndeksBahan] <> 0) then
+        if (InventoriO.Jumlah[IndeksBahan] <> 0) then
         begin
           {kurangi}
           InventoriO.Jumlah[IndeksBahan] := InventoriO.Jumlah[IndeksBahan] - 1;
