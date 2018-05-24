@@ -66,6 +66,10 @@ var
   {F.S : Menambah nilai kapasitas jika syarat terpenuhi. Jika tidak, maka nilai
   kapasitas tidak berubah dan Error bernilai true}
 
+  function simulasiAda(NomorSimulasi :integer):integer;
+  {Cek apakah nomor simulasi valid}
+  {Mengembalikan -1 saat tidak menemukan}
+
 
 implementation
 
@@ -170,18 +174,17 @@ implementation
 	  end;
   end;
 
-  procedure startSimulasi(NomorSimulasi : integer; var ERROR:boolean);
+  function simulasiAda(NomorSimulasi :integer):integer;
 
   {KAMUS LOKAL}
   var
-  	Indeks : integer;
-	  Ada : boolean;
+    Ada:boolean;
+    Indeks:integer;
 
-  {Algoritma - startSimulasi}
+  {Algoritma - simulasiAda}
   begin
-    ERROR := false;
-    Indeks := 1;
-  	Ada := false;
+    Indeks:=1;
+    Ada := false;
     {cari simulasi dengan nomor sesuai (kaena nomor simulasi bisa tidak berurut)}
   	while ((Indeks <= SemuaSimulasi.Neff) and (not Ada)) do
     begin
@@ -191,13 +194,37 @@ implementation
   		end;
       Indeks:=Indeks+1;
   	end;
-  	if Ada then
+
+    if Ada then
+    begin
+      Indeks := Indeks -1;
+    end else
+    begin
+      Indeks := -1;
+    end;
+
+    simulasiAda:=Indeks;
+  end;
+
+  procedure startSimulasi(NomorSimulasi : integer; var ERROR:boolean);
+
+  {KAMUS LOKAL}
+  var
+  	Indeks : integer;
+
+  {Algoritma - startSimulasi}
+  begin
+    ERROR := false;
+
+    Indeks := simulasiAda(NomorSimulasi);
+
+  	if (Indeks<>-1) then
     begin
       {cek apa sudah selesai simulasinya (hari ke 10)}
-      if(SemuaSimulasi.Isi[Indeks-1].JumlahHidup<10)then
+      if(SemuaSimulasi.Isi[Indeks].JumlahHidup<10)then
       begin
         writelnText('Mulai simulasi '+IntToStr(Nomorsimulasi));
-        SimulasiAktif := SemuaSimulasi.Isi[Indeks-1];
+        SimulasiAktif := SemuaSimulasi.Isi[Indeks];
         banyakIstirahat := 0;
         banyakMakan := 0;
       end else

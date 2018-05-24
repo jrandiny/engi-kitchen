@@ -304,17 +304,61 @@ begin
 
     case LowerCase(InputTerproses.Perintah) of
       'upgradeinventori':begin
-        upgradeInventori(Error);
-        if (not(Error)) then
+        if(isSimulasiAktif)then
         begin
-          pakaiUang(HARGAUPGRADE, Error);
-          writelnText('Berhasil menambah kapasitas inventori menjadi ' + IntToStr(SimulasiAktif.Kapasitas));
+          upgradeInventori(Error);
+          if (not(Error)) then
+          begin
+            pakaiUang(HARGAUPGRADE, Error);
+            writelnText('Berhasil menambah kapasitas inventori menjadi ' + IntToStr(SimulasiAktif.Kapasitas));
+          end;
+        end else
+        begin
+          if(LoadSukses)then
+          begin
+            if (InputTerproses.Neff = 0) then
+            begin
+              tanya('Nomor simulasi',InputTerproses.Opsi[1]);
+            end;
+            Val(InputTerproses.Opsi[1],OpsiAngka,KodeError);
+      		  if(KodeError<>0)then
+      		  begin
+      		    writeError('Main','Nomor simulasi harus berupa angka');
+      		  end else
+            begin
+              if(simulasiAda(OpsiAngka)<>-1)then
+              begin
+                SimulasiAktif := SemuaSimulasi.Isi[simulasiAda(OpsiAngka)];
+                upgradeInventori(Error);
+                if (not(Error)) then
+                begin
+                  pakaiUang(HARGAUPGRADE, Error);
+                  writelnText('Berhasil menambah kapasitas inventori menjadi ' + IntToStr(SimulasiAktif.Kapasitas));
+                end;
+              end else
+              begin
+                writeError('Main','Nomor simulasi tidak ada');
+              end;
+            end;
+
+          end else
+          begin
+            writeError('Main','Loading belum sukses');
+          end;
         end;
+
       end;
 
       'lihatresep':begin
-        sortResep();
-        lihatresep();
+        if(LoadSukses)then
+        begin
+          sortResep();
+          lihatresep();
+        end else
+        begin
+          writeError('Main','Loading belum sukses');
+        end;
+
       end;
 
       'help':begin
@@ -353,51 +397,65 @@ begin
       end;
 
       'cariresep' : begin
-        if (InputTerproses.Neff = 0) then
+        if(LoadSukses)then
         begin
-          tanya('Nama resep',InputTerproses.Opsi[1]);
+          if (InputTerproses.Neff = 0) then
+          begin
+            tanya('Nama resep',InputTerproses.Opsi[1]);
+          end;
+          formatUserInput(InputTerproses.Opsi[1]);
+          cariResep(InputTerproses.Opsi[1]);
+        end else
+        begin
+          writeError('Main','Loading belum sukses');
         end;
-        formatUserInput(InputTerproses.Opsi[1]);
-        cariResep(InputTerproses.Opsi[1]);
+
       end;
 
       'tambahresep' : begin
-        if(InputTerproses.Neff = 0) then
+        if(LoadSukses)then
         begin
-      	  tanya('Nama resep',InputTerproses.Opsi[1]);
-    	  end;
-        formatUserInput(InputTerproses.Opsi[1]);
+          if(InputTerproses.Neff = 0) then
+          begin
+        	  tanya('Nama resep',InputTerproses.Opsi[1]);
+      	  end;
+          formatUserInput(InputTerproses.Opsi[1]);
 
-        ResepBaru.Nama := InputTerproses.Opsi[1];
-        tanya('Harga',StringInput);
-        Val(StringInput,HargaResep,KodeError);
-        if(KodeError<>0) then
+          ResepBaru.Nama := InputTerproses.Opsi[1];
+          tanya('Harga',StringInput);
+          Val(StringInput,HargaResep,KodeError);
+          if(KodeError<>0) then
+          begin
+    		    writeError('Main','Harga harus berupa angka');
+    		  end else
+    		  begin
+    		    ResepBaru.Harga := HargaResep;
+      			tanya('Jumlah bahan',StringInput);
+      			Val(StringInput,OpsiAngka,KodeError);
+      			if(KodeError<>0) then
+      			begin
+      			  writeError('Main','Jumlah bahan harus berupa angka');
+    		    end else
+    		    begin
+      			  ResepBaru.JumlahBahan := OpsiAngka;
+      			  writelnText('Daftar bahan: ');
+              for i := 1 to ResepBaru.JumlahBahan do
+              begin
+                tanya('   Bahan '+ IntToStr(i),ResepBaru.Bahan[i]);
+                formatUserInput(ResepBaru.Bahan[i]);
+      			  end;
+  			      tambahResep(ResepBaru, Error);
+              if (not(Error)) then
+              begin
+                writelnText('Berhasil menambahkan resep ' + ResepBaru.Nama);
+              end;
+  			    end;
+    	    end;
+        end else
         begin
-  		    writeError('Main','Harga harus berupa angka');
-  		  end else
-  		  begin
-  		    ResepBaru.Harga := HargaResep;
-    			tanya('Jumlah bahan',StringInput);
-    			Val(StringInput,OpsiAngka,KodeError);
-    			if(KodeError<>0) then
-    			begin
-    			  writeError('Main','Jumlah bahan harus berupa angka');
-  		    end else
-  		    begin
-    			  ResepBaru.JumlahBahan := OpsiAngka;
-    			  writelnText('Daftar bahan: ');
-            for i := 1 to ResepBaru.JumlahBahan do
-            begin
-              tanya('   Bahan '+ IntToStr(i),ResepBaru.Bahan[i]);
-              formatUserInput(ResepBaru.Bahan[i]);
-    			  end;
-			      tambahResep(ResepBaru, Error);
-            if (not(Error)) then
-            begin
-              writelnText('Berhasil menambahkan resep ' + ResepBaru.Nama);
-            end;
-			    end;
-  	    end;
+          writeError('Main','Loading belum sukses');
+        end;
+
       end;
       else
       begin
