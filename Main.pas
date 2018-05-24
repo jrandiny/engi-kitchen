@@ -437,18 +437,25 @@ begin
       			  writeError('Main','Jumlah bahan harus berupa angka');
     		    end else
     		    begin
-      			  ResepBaru.JumlahBahan := OpsiAngka;
-      			  writelnText('Daftar bahan: ');
-              for i := 1 to ResepBaru.JumlahBahan do
+              if((OpsiAngka>=2)and(OpsiAngka<=20))then
               begin
-                tanya('   Bahan '+ IntToStr(i),ResepBaru.Bahan[i]);
-                formatUserInput(ResepBaru.Bahan[i]);
-      			  end;
-  			      tambahResep(ResepBaru, Error);
-              if (not(Error)) then
+                ResepBaru.JumlahBahan := OpsiAngka;
+        			  writelnText('Daftar bahan: ');
+                for i := 1 to ResepBaru.JumlahBahan do
+                begin
+                  tanya('   Bahan '+ IntToStr(i),ResepBaru.Bahan[i]);
+                  formatUserInput(ResepBaru.Bahan[i]);
+        			  end;
+    			      tambahResep(ResepBaru, Error);
+                if (not(Error)) then
+                begin
+                  writelnText('Berhasil menambahkan resep ' + ResepBaru.Nama);
+                end;
+              end else
               begin
-                writelnText('Berhasil menambahkan resep ' + ResepBaru.Nama);
+                writeError('Main','Jumlah bahan harus >= 2 dan <= 20');
               end;
+
   			    end;
     	    end;
         end else

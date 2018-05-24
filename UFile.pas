@@ -261,18 +261,34 @@ implementation
       Val(Input.Isi[i][3],JumlahBahanMentah,KodeError);
       IsError:= IsError or (KodeError<>0);
 
+      Hasil.Isi[i].JumlahBahan:=JumlahBahanMentah;
+
+      if((JumlahBahanMentah<=10)and(JumlahBahanMentah>=1))then
+      begin
+        for j:=1 to JumlahBahanMentah do
+        begin
+          if(Input.isi[i][j+3]='')then
+          begin
+            IsError:=true;
+            writeError('UFile','Ada bahan olahan ('+ Input.Isi[i][1] +') yang jumlah bahannya tidak sesuai dengan jumlah bahan yang ada');
+          end else
+          begin
+            Hasil.Isi[i].Bahan[j] := Input.isi[i][j+3];
+          end;
+        end;
+      end else
+      begin
+        IsError:=true;
+        writeError('UFile','Ada bahan olahan ('+ Input.Isi[i][1] +') yang punya jumlah bahan < 1 atau > 10');
+      end;
+
       if(IsError)then
       begin
         writeError('UFile','Error dalam membaca file bahan olahan, baris ' + IntToStr(i));
         LoadSukses:=false;
       end;
 
-      Hasil.Isi[i].JumlahBahan:=JumlahBahanMentah;
 
-      for j:=1 to JumlahBahanMentah do
-      begin
-        Hasil.Isi[i].Bahan[j] := Input.isi[i][j+3];
-      end;
     end;
 
     Hasil.Neff:=Input.NBar;
@@ -412,10 +428,26 @@ implementation
 
       Hasil.Isi[i].JumlahBahan:=JumlahBahan;
 
-      for j:=1 to JumlahBahan do
+      if((JumlahBahan>=2)and(JumlahBahan<=20))then
       begin
-        Hasil.Isi[i].Bahan[j] := Input.isi[i][j+3];
+        for j:=1 to JumlahBahan do
+        begin
+          if(Input.isi[i][j+3]='')then
+          begin
+            IsError:=true;
+            writeError('UFile','Ada resep ('+ Input.Isi[i][1] +') yang jumlah bahannya tidak sesuai dengan jumlah bahan yang ada');
+          end else
+          begin
+            Hasil.Isi[i].Bahan[j] := Input.isi[i][j+3];
+          end;
+        end;
+      end else
+      begin
+        isError:=true;
+        writeError('UFile','Ada resep ('+Input.Isi[i][1]+') yang jumlah bahannya < 2 atau > 20');
       end;
+
+
 
       if(isError)then
       begin
