@@ -247,3 +247,5 @@ Command untuk menambah kapasitas maksimum inventori. Command dapat berjalan keti
 ```
 >> upgradeinventori
 ```
+
+Saat simulasi tidak berjalan, akan diminta parameter tambahan yaitu nomor simulasi yang ingin diubah
