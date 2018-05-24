@@ -21,7 +21,7 @@ Untuk data bisa dilihat di folder 'sample data', jika ingin menggunakan pindahka
 ## Milestone
 - [x] Tester
 - [x] UI refactor
-- [ ] Pengujian mendalam
+- [x] Pengujian mendalam
 - [ ] GUI
 - [ ] ???
 
